@@ -1,0 +1,37 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f4f4;
+}
+#logo {
+    width: 200px;
+    height: auto;
+}
+a {
+    color: #0000ff; /* Blue color for all links */
+    text-decoration: underline; /* Underlines all links */
+    margin: 10px 0; /* Vertical spacing for separation */
+    display: inline-block; /* Adjust display to handle spacing correctly */
+}
+#main-name {
+    font-weight: bold;
+    color: #0000ff; /* Darker font color */
+    background-color: #ffd700; /* Golden background for highlight */
+    text-decoration: underline; /* Removes underline from the highlighted link */
+}
+#links a:not(:last-child)::after {
+    content: "|";
+    margin-left: 10px;
+    color: #0000ff; /* Blue color for the separator as well */
+}
+.bio-content {
+    max-width: 700px; /* Sets the maximum width of the bio content */
+    margin: 40px auto; /* Centers the content horizontally and adds vertical spacing */
+    padding: 20px; /* Padding inside the bio content area */
+}
