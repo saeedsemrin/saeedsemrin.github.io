@@ -35,3 +35,28 @@ a {
     margin: 40px auto; /* Centers the content horizontally and adds vertical spacing */
     padding: 20px; /* Padding inside the bio content area */
 }
+
+/* Top Right Container Styling */
+#top-right {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    text-align: right;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#top-right div {
+    margin: 5px 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+    font-size: 14px;
+}
+
+#top-right #time {
+    font-size: 16px;
+    font-weight: bold;
+}
+
