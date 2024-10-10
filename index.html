@@ -5,15 +5,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-    <img id="logo" src="picasso.png" alt="add logo">
-    <a href="index.html" id="main-name">saeed semrin</a>
-    <a href="bio.html">bio</a>
-    <div id="links">
-        <a href="https://twitter.com" target="_blank">twitter</a>
-        <a href="https://www.linkedin.com/in/saeed-semrin/" target="_blank">linkedin</a>
+    <!-- Top Right Container for Time, Location, and Temperature -->
+    <div id="top-right">
+        <div id="time">--:--:--</div>
+        <div id="location">Loading location...</div>
+        <div id="temperature">Loading temperature...</div>
     </div>
+
+    <!-- Existing Content -->
+    <img id="logo" src="picasso.png" alt="add logo">
+    <a href="index.html" id="main-name">Saeed Semrin</a>
+    <a href="bio.html">Bio</a>
+    <div id="links">
+        <a href="https://twitter.com" target="_blank">Twitter</a>
+        <a href="https://www.linkedin.com/in/saeed-semrin/" target="_blank">LinkedIn</a>
+    </div>
+
+    <!-- JavaScript to Handle Time, Location, and Temperature -->
+    <script>
+        // Function to update the current time every second
+        function updateTime() {
+            const timeElement = document.getElementById('time');
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        // Call updateTime immediately and then every second
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // Function to get location using Geolocation API
+        function getLocation() {
+            const locationElement = document.getElementById('location');
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                locationElement.textContent = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        // Success callback for geolocation
+        function showPosition(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            // Fetch location name and temperature using OpenWeatherMap API
+            fetchWeather(latitude, longitude);
+        }
+
+        // Error callback for geolocation
+        function showError(error) {
+            const locationElement = document.getElementById('location');
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    locationElement.textContent = "User denied the request for Geolocation.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    locationElement.textContent = "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    locationElement.textContent = "The request to get user location timed out.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    locationElement.textContent = "An unknown error occurred.";
+                    break;
+            }
+        }
+
+        // Function to fetch weather data from OpenWeatherMap
+        function fetchWeather(lat, lon) {
+            const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY'; // Replace with your OpenWeatherMap API key
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const locationElement = document.getElementById('location');
+                    const temperatureElement = document.getElementById('temperature');
+                    const city = data.name;
+                    const state = data.sys.country; // OpenWeatherMap provides country code
+                    const temperature = Math.round(data.main.temp);
+                    
+                    locationElement.textContent = `${city}, ${state}`;
+                    temperatureElement.textContent = `${temperature}°F`;
+                })
+                .catch(error => {
+                    console.error('Error fetching weather data:', error);
+                    document.getElementById('temperature').textContent = "Unable to fetch temperature.";
+                });
+        }
+
+        // Initialize location and weather on page load
+        window.onload = getLocation;
+    </script>
 </body>
 </html>
