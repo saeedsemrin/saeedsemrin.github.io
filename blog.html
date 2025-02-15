@@ -2,35 +2,86 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog Archive</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            padding: 50px 0;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 3em;
+            color: #333;
+        }
+        .posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 0;
+            border-top: 1px solid #ddd;
+            border-left: 1px solid #ddd;
+        }
+        .post {
+            background-color: #fff;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            box-sizing: border-box;
+        }
+        .post h2 {
+            margin-top: 0;
+            font-size: 1.5em;
+            color: #333;
+        }
+        .post p {
+            font-size: 1em;
+            line-height: 1.6;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Comprehensive Archive</h1>
-        <p>Born in Rockford, Illinois U.S.A. in 1980 – Virgil Abloh is an artist, architect, and fashion designer...</p>
-    </header>
-    <main>
-        <section class="year-section">
-            <h2>2021</h2>
-            <article class="post">
-                <h3>Men’s Fall-Winter 2021 Show in Seoul with House Ambassadors BTS | LOUIS VUITTON</h3>
-                <p>Fashion</p>
-            </article>
-            <!-- Add more posts as needed -->
-        </section>
-        <section class="year-section">
-            <h2>2020</h2>
-            <article class="post">
-                <h3>Off-White c/o Virgil Abloh™ Fall Winter 2021 collection show titled “Laboratory of Fun”</h3>
-                <p>Fashion</p>
-            </article>
-            <!-- Add more posts as needed -->
-        </section>
-        <!-- Add more year sections as needed -->
-    </main>
-    <footer>
-        <p>&copy; 2025 Your Blog Name</p>
-    </footer>
+    <div class="container">
+        <div class="header">
+            <h1>Blog Archive</h1>
+        </div>
+        <div class="posts">
+            <div class="post">
+                <h2>Post Title 1</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
+            </div>
+            <div class="post">
+                <h2>Post Title 2</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
+            </div>
+            <div class="post">
+                <h2>Post Title 3</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
+            </div>
+            <div class="post">
+                <h2>Post Title 4</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
+            </div>
+            <div class="post">
+                <h2>Post Title 5</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
+            </div>
+            <div class="post">
+                <h2>Post Title 6</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
