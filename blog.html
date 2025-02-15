@@ -29,15 +29,19 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 0;
-            border-top: 1px solid #ddd;
-            border-left: 1px solid #ddd;
         }
         .post {
             background-color: #fff;
             padding: 20px;
-            border-right: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
+            border-top: 1px solid #ddd;
+            border-left: 1px solid #ddd;
             box-sizing: border-box;
+        }
+        .post:nth-child(-n + 3) {
+            border-top: none;
+        }
+        .post:nth-child(3n + 1) {
+            border-left: none;
         }
         .post h2 {
             margin-top: 0;
