@@ -15,6 +15,7 @@
             width: 80%;
             margin: 0 auto;
             padding: 20px;
+            position: relative;
         }
         .header {
             text-align: center;
@@ -24,6 +25,11 @@
             margin: 0;
             font-size: 3em;
             color: #333;
+        }
+        .filter {
+            position: absolute;
+            top: 20px;
+            right: 20px;
         }
         .posts {
             display: grid;
@@ -36,12 +42,22 @@
             border-top: 1px solid #ddd;
             border-left: 1px solid #ddd;
             box-sizing: border-box;
+            position: relative;
         }
         .post:nth-child(-n + 3) {
             border-top: none;
         }
         .post:nth-child(3n + 1) {
             border-left: none;
+        }
+        .identifier {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ccc;
+            padding: 5px 10px;
+            font-size: 0.9em;
+            color: #333;
         }
         .post h2 {
             margin-top: 0;
@@ -60,36 +76,60 @@
         <div class="header">
             <h1>Blog Archive</h1>
         </div>
-        <div class="posts">
-            <div class="post">
+        <div class="filter">
+            <label for="filter">Filter by:</label>
+            <select id="filter" onchange="filterPosts()">
+                <option value="all">All</option>
+                <option value="fitness">Fitness</option>
+                <option value="thoughts">Thoughts</option>
+                <option value="work">Work</option>
+            </select>
+        </div>
+        <div class="posts" id="posts">
+            <div class="post" data-category="fitness">
+                <div class="identifier">Fitness</div>
                 <h2>Post Title 1</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
             </div>
-            <div class="post">
+            <div class="post" data-category="thoughts">
+                <div class="identifier">Thoughts</div>
                 <h2>Post Title 2</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
             </div>
-            <div class="post">
+            <div class="post" data-category="work">
+                <div class="identifier">Work</div>
                 <h2>Post Title 3</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
             </div>
-            <div class="post">
+            <div class="post" data-category="fitness">
+                <div class="identifier">Fitness</div>
                 <h2>Post Title 4</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
             </div>
-            <div class="post">
+            <div class="post" data-category="thoughts">
+                <div class="identifier">Thoughts</div>
                 <h2>Post Title 5</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
             </div>
-            <div class="post">
+            <div class="post" data-category="work">
+                <div class="identifier">Work</div>
                 <h2>Post Title 6</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
-            </div>
-            <div class="post">
-                <h2>Post Title 7</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
             </div>
         </div>
     </div>
+    <script>
+        function filterPosts() {
+            const filter = document.getElementById('filter').value;
+            const posts = document.querySelectorAll('.post');
+            posts.forEach(post => {
+                if (filter === 'all' || post.getAttribute('data-category') === filter) {
+                    post.style.display = '';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
