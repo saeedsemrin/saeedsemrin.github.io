@@ -1,7 +1,7 @@
 /* Blog Page Styles */
 .blog-container {
     width: 80%;
-    margin: 0 auto;
+    margin: 20px auto; /* Adjust margin to keep space at the top */
     padding: 20px;
     position: relative;
 }
