@@ -28,12 +28,15 @@
         .posts {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 10px;
+            gap: 0;
+            border-top: 1px solid #ddd;
+            border-left: 1px solid #ddd;
         }
         .post {
             background-color: #fff;
             padding: 20px;
-            border: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
             box-sizing: border-box;
         }
         .post h2 {
