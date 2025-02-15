@@ -4,18 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+        }
+        label, input, textarea {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Contact Me</h1>
     <form action="mailto:saeedsemrin@gmail.com" method="post" enctype="text/plain">
-        <label for="email">Your Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
+        <label for="email">your email:</label>
+        <input type="email" id="email" name="email" required>
         
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required><br><br>
+        <label for="title">title:</label>
+        <input type="text" id="title" name="title" required>
         
-        <label for="content">Content:</label><br>
-        <textarea id="content" name="content" rows="10" cols="30" required></textarea><br><br>
+        <label for="content">message:</label>
+        <textarea id="content" name="content" rows="10" required></textarea>
         
         <input type="submit" value="Send">
     </form>
