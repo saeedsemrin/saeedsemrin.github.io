@@ -13,28 +13,14 @@
             margin: 0;
             font-family: Arial, sans-serif;
         }
-        form {
-            display: flex;
-            flex-direction: column;
-            width: 300px;
-        }
-        label, input, textarea {
-            margin-bottom: 10px;
+        .container {
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <form action="mailto:saeedsemrin@gmail.com" method="post" enctype="text/plain">
-        <label for="email">your email:</label>
-        <input type="email" id="email" name="email" required>
-        
-        <label for="title">title:</label>
-        <input type="text" id="title" name="title" required>
-        
-        <label for="content">message:</label>
-        <textarea id="content" name="content" rows="10" required></textarea>
-        
-        <input type="submit" value="Send">
-    </form>
+    <div class="container">
+        <p>contact me at: <a href="mailto:saeedsemrin@gmail.com">saeedsemrin@gmail.com</a></p>
+    </div>
 </body>
 </html>
