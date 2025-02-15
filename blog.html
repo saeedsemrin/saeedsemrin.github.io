@@ -4,88 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog Archive</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #fff;
-        }
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-        }
-        .header {
-            text-align: center;
-            padding: 50px 0;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 3em;
-            color: #333;
-        }
-        .filter {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-        .home-link {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 0.9em;
-            color: #333;
-            text-decoration: none;
-        }
-        .posts {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 0;
-        }
-        .post {
-            background-color: #fff;
-            padding: 20px;
-            border-top: 1px solid #ddd;
-            border-left: 1px solid #ddd;
-            box-sizing: border-box;
-            position: relative;
-        }
-        .post:nth-child(-n + 3) {
-            border-top: none;
-        }
-        .post:nth-child(3n + 1) {
-            border-left: none;
-        }
-        .identifier {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #ccc;
-            padding: 5px 10px;
-            font-size: 0.9em;
-            color: #333;
-        }
-        .post h2 {
-            margin-top: 0;
-            font-size: 1.5em;
-            color: #333;
-        }
-        .post p {
-            font-size: 1em;
-            line-height: 1.6;
-            color: #666;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <a href="/" class="home-link">Home</a>
-        <div class="header">
+    <div class="blog-container">
+        <a href="/" class="blog-home-link">Home</a>
+        <div class="blog-header">
             <h1>Blog Archive</h1>
         </div>
-        <div class="filter">
+        <div class="blog-filter">
             <label for="filter">Filter by:</label>
             <select id="filter" onchange="filterPosts()">
                 <option value="all">All</option>
@@ -94,34 +21,34 @@
                 <option value="work">Work</option>
             </select>
         </div>
-        <div class="posts" id="posts">
-            <div class="post" data-category="fitness">
-                <div class="identifier">Fitness</div>
+        <div class="blog-posts" id="posts">
+            <div class="blog-post" data-category="fitness">
+                <div class="blog-identifier">Fitness</div>
                 <h2>Post Title 1</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
             </div>
-            <div class="post" data-category="thoughts">
-                <div class="identifier">Thoughts</div>
+            <div class="blog-post" data-category="thoughts">
+                <div class="blog-identifier">Thoughts</div>
                 <h2>Post Title 2</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
             </div>
-            <div class="post" data-category="work">
-                <div class="identifier">Work</div>
+            <div class="blog-post" data-category="work">
+                <div class="blog-identifier">Work</div>
                 <h2>Post Title 3</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
             </div>
-            <div class="post" data-category="fitness">
-                <div class="identifier">Fitness</div>
+            <div class="blog-post" data-category="fitness">
+                <div class="blog-identifier">Fitness</div>
                 <h2>Post Title 4</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
             </div>
-            <div class="post" data-category="thoughts">
-                <div class="identifier">Thoughts</div>
+            <div class="blog-post" data-category="thoughts">
+                <div class="blog-identifier">Thoughts</div>
                 <h2>Post Title 5</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
             </div>
-            <div class="post" data-category="work">
-                <div class="identifier">Work</div>
+            <div class="blog-post" data-category="work">
+                <div class="blog-identifier">Work</div>
                 <h2>Post Title 6</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
             </div>
@@ -130,7 +57,7 @@
     <script>
         function filterPosts() {
             const filter = document.getElementById('filter').value;
-            const posts = document.querySelectorAll('.post');
+            const posts = document.querySelectorAll('.blog-post');
             posts.forEach(post => {
                 if (filter === 'all' || post.getAttribute('data-category') === filter) {
                     post.style.display = '';
