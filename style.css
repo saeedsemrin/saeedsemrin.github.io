@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Courier Bold", "Courier New", Courier, monospace;
     text-align: center;
     margin: 0;
     height: 100vh;
@@ -50,7 +50,7 @@ a {
 
 #top-right div {
     margin: 5px 0;
-    font-family: Arial, sans-serif;
+    font-family: "Courier Bold", "Courier New", Courier, monospace;
     color: #333;
     font-size: 14px;
 }
@@ -66,7 +66,7 @@ a {
     left: 10px;
     text-align: left;
     max-width: 300px;
-    font-family: Arial, sans-serif;
+    font-family: "Courier Bold", "Courier New", Courier, monospace;
     color: #333;
     font-size: 14px;
     line-height: 1.4;
