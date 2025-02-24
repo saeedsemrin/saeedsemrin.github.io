@@ -150,3 +150,14 @@ a {
     line-height: 1.6;
     color: #666;
 }
+
+.nav-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    font-size: 0.9em;
+}
+
+.current-time, .location {
+    color: black;
+}
