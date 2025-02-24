@@ -207,3 +207,9 @@ select {
 .archive-item p {
     color: black;
 }
+
+.post-date {
+    font-size: 0.8em;
+    color: black;
+    margin-bottom: 5px;
+}

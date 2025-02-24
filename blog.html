@@ -25,8 +25,9 @@
             <button onclick="closeAll()" class="close-all">close all</button>
         </div>
         <div class="archive-grid" id="posts">
-            <div class="archive-item" data-category="fitness">
+            <div class="archive-item" data-category="fitness" data-date="2024-02-24">
                 <div class="item-category">fitness</div>
+                <div class="post-date">february 24, 2024</div>
                 <h2><a href="/blog/2-24-25-weekly-fitness.html" class="post-link">2/24/25 weekly fitness update</a></h2>
                 <div class="item-details">
                     <span class="location">denver</span>
@@ -36,8 +37,9 @@
                     </div>
                 </div>
             </div>
-            <div class="archive-item" data-category="thoughts">
+            <div class="archive-item" data-category="thoughts" data-date="2024-02-23">
                 <div class="item-category">thoughts</div>
+                <div class="post-date">february 23, 2024</div>
                 <h2><a href="/blog/post-1.html" class="post-link">the purpose</a></h2>
                 <div class="item-details">
                     <span class="location">denver</span>
@@ -47,8 +49,9 @@
                     </div>
                 </div>
             </div>
-            <div class="archive-item" data-category="fitness">
+            <div class="archive-item" data-category="fitness" data-date="2024-02-22">
                 <div class="item-category">fitness</div>
+                <div class="post-date">february 22, 2024</div>
                 <h2><a href="#" class="post-link">weekly fitness update #1</a></h2>
                 <div class="item-details">
                     <span class="location">denver</span>
@@ -58,8 +61,9 @@
                     </div>
                 </div>
             </div>
-            <div class="archive-item" data-category="thoughts">
+            <div class="archive-item" data-category="thoughts" data-date="2024-02-21">
                 <div class="item-category">thoughts</div>
+                <div class="post-date">february 21, 2024</div>
                 <h2><a href="#" class="post-link">on consistency</a></h2>
                 <div class="item-details">
                     <span class="location">denver</span>
@@ -69,8 +73,9 @@
                     </div>
                 </div>
             </div>
-            <div class="archive-item" data-category="work">
+            <div class="archive-item" data-category="work" data-date="2024-02-20">
                 <div class="item-category">work</div>
+                <div class="post-date">february 20, 2024</div>
                 <h2><a href="#" class="post-link">project reflections</a></h2>
                 <div class="item-details">
                     <span class="location">remote</span>
@@ -80,8 +85,9 @@
                     </div>
                 </div>
             </div>
-            <div class="archive-item" data-category="fitness">
+            <div class="archive-item" data-category="fitness" data-date="2024-02-19">
                 <div class="item-category">fitness</div>
+                <div class="post-date">february 19, 2024</div>
                 <h2><a href="#" class="post-link">weekly fitness update #2</a></h2>
                 <div class="item-details">
                     <span class="location">denver</span>
@@ -91,8 +97,9 @@
                     </div>
                 </div>
             </div>
-            <div class="archive-item" data-category="thoughts">
+            <div class="archive-item" data-category="thoughts" data-date="2024-02-18">
                 <div class="item-category">thoughts</div>
+                <div class="post-date">february 18, 2024</div>
                 <h2><a href="#" class="post-link">digital minimalism</a></h2>
                 <div class="item-details">
                     <span class="location">denver</span>
@@ -102,8 +109,9 @@
                     </div>
                 </div>
             </div>
-            <div class="archive-item" data-category="work">
+            <div class="archive-item" data-category="work" data-date="2024-02-17">
                 <div class="item-category">work</div>
+                <div class="post-date">february 17, 2024</div>
                 <h2><a href="#" class="post-link">learning new tech</a></h2>
                 <div class="item-details">
                     <span class="location">remote</span>
@@ -133,6 +141,23 @@
         }
         setInterval(updateTime, 1000);
         updateTime();
+
+        // Sort posts by date
+        function sortPosts() {
+            const postsContainer = document.getElementById('posts');
+            const posts = Array.from(postsContainer.getElementsByClassName('archive-item'));
+            
+            posts.sort((a, b) => {
+                const dateA = new Date(a.getAttribute('data-date'));
+                const dateB = new Date(b.getAttribute('data-date'));
+                return dateB - dateA; // Sort in descending order (newest first)
+            });
+            
+            posts.forEach(post => postsContainer.appendChild(post));
+        }
+
+        // Call sort function after page loads
+        window.addEventListener('load', sortPosts);
 
         // Filter posts
         function filterPosts() {
