@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2/24/25 weekly fitness update</title>
+    <link rel="stylesheet" href="../style_blog.css">
+</head>
+<body>
+    <div class="archive-container">
+        <div class="nav-header">
+            <div class="nav-links">
+                <a href="/" class="home-link">home</a>
+                <span class="nav-separator">/</span>
+                <a href="/blog.html" class="home-link">blog</a>
+            </div>
+            <div class="current-time" id="currentTime"></div>
+        </div>
+        
+        <article class="blog-post-content">
+            <div class="post-meta">
+                <span class="post-date">february, 24, 2025</span>
+                <span class="post-location">denver</span>
+                <span class="post-category">fitness</span>
+            </div>
+            
+            <h1>2/24/25 weekly fitness update</h1>
+            
+            <!-- Post content goes here -->
+            <p>weekly fitness update</p>
+            
+            <!-- Add more paragraphs as needed -->
+            <p>building foundaitonal habits with AM workouts and PM mobility and biomechanics trainng</p>
+            <p>monday wednesday friday workouts are speed training</p>
+            <p>tuesday thursday saturday are vertical jump training</p>
+            <p>every day achilles tendonitis work</p>
+            <p>conditoning monday wednesday friday in the afternoon</p>
+            <p>GOATA biomechanics tuesday thursday saturday in the evening</p>
+            <p>have to keep working and takign on load while there are no practices so that there will bo no drop off in
+                trainng when practices start back up </p>            
+        </article>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                `current local time: ${now.toLocaleTimeString()}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html> 
