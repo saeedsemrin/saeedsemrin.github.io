@@ -61,11 +61,11 @@ a {
 }
 
 #top-left {
-    position: fixed;
+    position: absolute;
     top: 10px;
     left: 10px;
     text-align: left;
-    margin-right: 200px; /* Increased margin slightly */
+    width: calc(100% - 220px);
     font-family: "Courier Bold", "Courier New", Courier, monospace;
     color: #333;
     font-size: 14px;
