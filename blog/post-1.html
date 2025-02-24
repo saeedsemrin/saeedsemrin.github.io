@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>the purpose</title>
+    <link rel="stylesheet" href="../style_blog.css">
+</head>
+<body>
+    <div class="archive-container">
+        <div class="nav-header">
+            <a href="/" class="home-link">home</a>
+            <div class="current-time" id="currentTime"></div>
+        </div>
+        
+        <article class="blog-post-content">
+            <div class="post-meta">
+                <span class="post-date">february 24, 2024</span>
+                <span class="post-location">denver</span>
+                <span class="post-category">thoughts</span>
+            </div>
+            
+            <h1>the purpose</h1>
+            
+            <p>this is the first post on my blog.</p>
+            
+            <p>i wanted to address the purpose of this blog.</p>
+            
+            <p>i'm not sure what the purpose of this blog is yet.</p>
+            
+            <p>i'm just going to write about my life and see where it goes.</p>
+            
+            <p>so... you can expect this to be about things i find interesting, my personal thoughts, alot of fitness, and whatever else comes to mind.</p>
+            
+            <p>itll change over time soo lets just see where it goes.</p>
+        </article>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                `current local time: ${now.toLocaleTimeString()}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html> 

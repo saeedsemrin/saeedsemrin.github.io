@@ -6,25 +6,16 @@ location: "denver"
 excerpt: "my reason for writing and documenting my life"
 ---
 
-# Post Title 1
+this is the first post on my blog.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+i wanted to address the purpose of this blog.
 
-## Section 1
+i'm not sure what the purpose of this blog is yet.
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+i'm just going to write about my life and see where it goes.
 
-## Section 2
+so... you can expect this to be about things i find interesting, my personal thoughts, alot of fitness, and whatever else comes to mind.
 
-- Point 1
-- Point 2
-- Point 3
-
-## Conclusion
-
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+itll change over time soo lets just see where it goes.
 
 ---
-
-*Share this post:*
-[Facebook](#) | [Twitter](#) | [WhatsApp](#) 
