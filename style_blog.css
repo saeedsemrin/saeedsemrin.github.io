@@ -1,7 +1,7 @@
 /* Blog Page Styles */
 .blog-container {
-    width: 80%;
-    margin: 20px auto; /* Adjust margin to keep space at the top */
+    width: 100%;
+    margin: 20px auto;
     padding: 20px;
     position: relative;
 }
@@ -80,13 +80,15 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     background: white;
 }
 
 .archive-container {
-    max-width: 1200px;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
+    padding: 20px;
 }
 
 .nav-header {
@@ -127,17 +129,18 @@ select {
 
 .archive-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);  /* Always show 3 columns */
-    gap: 0;  /* Remove gap between items */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
     border-top: 1px solid #eee;
     border-left: 1px solid #eee;
+    width: 100%;
 }
 
 .archive-item {
     border-right: 1px solid #eee;
     border-bottom: 1px solid #eee;
     padding: 20px;
-    min-height: 200px;  /* Set minimum height for consistency */
+    min-height: 200px;
     display: flex;
     flex-direction: column;
 }
@@ -175,13 +178,13 @@ select {
 
 @media (min-width: 768px) {
     .archive-grid {
-        grid-template-columns: repeat(3, 1fr);  /* Keep 3 columns at all sizes */
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
 @media (min-width: 1024px) {
     .archive-grid {
-        grid-template-columns: repeat(3, 1fr);  /* Keep 3 columns at all sizes */
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
