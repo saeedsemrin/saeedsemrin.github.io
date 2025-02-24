@@ -3,68 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Archive</title>
-    <!--<link rel="stylesheet" href="style.css">-->
+    <title>Archive</title>
     <link rel="stylesheet" href="style_blog.css">
 </head>
 <body>
-    <div class="blog-container">
-        <a href="/" class="blog-home-link">Home</a>
-        <div class="blog-header">
-            <h1>Blog Archive</h1>
+    <div class="archive-container">
+        <!-- Navigation -->
+        <div class="nav-header">
+            <a href="/" class="home-link">Home</a>
+            <div class="current-time" id="currentTime"></div>
         </div>
-        <div class="blog-filter">
-            <label for="filter">Filter by:</label>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
             <select id="filter" onchange="filterPosts()">
-                <option value="all">All</option>
+                <option value="all">open comprehensive archive</option>
                 <option value="fitness">Fitness</option>
                 <option value="thoughts">Thoughts</option>
                 <option value="work">Work</option>
             </select>
+            <button onclick="closeAll()" class="close-all">close all</button>
         </div>
-        <div class="blog-posts" id="posts">
-            <div class="blog-post" data-category="fitness">
-                <div class="blog-identifier">Fitness</div>
+
+        <!-- Archive Grid -->
+        <div class="archive-grid" id="posts">
+            <div class="archive-item" data-category="fitness">
+                <div class="item-category">Fitness</div>
                 <h2>Post Title 1</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
+                <div class="item-details">
+                    <span class="location">Location</span>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <div class="share-links">
+                        SHARE: <a href="#">FB</a> <a href="#">TW</a> <a href="#">WA</a>
+                    </div>
+                </div>
             </div>
-            <div class="blog-post" data-category="thoughts">
-                <div class="blog-identifier">Thoughts</div>
+
+            <!-- Repeat for other posts -->
+            <div class="archive-item" data-category="thoughts">
+                <div class="item-category">Thoughts</div>
                 <h2>Post Title 2</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
+                <div class="item-details">
+                    <span class="location">Location</span>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <div class="share-links">
+                        SHARE: <a href="#">FB</a> <a href="#">TW</a> <a href="#">WA</a>
+                    </div>
+                </div>
             </div>
-            <div class="blog-post" data-category="work">
-                <div class="blog-identifier">Work</div>
-                <h2>Post Title 3</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
-            </div>
-            <div class="blog-post" data-category="fitness">
-                <div class="blog-identifier">Fitness</div>
-                <h2>Post Title 4</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
-            </div>
-            <div class="blog-post" data-category="thoughts">
-                <div class="blog-identifier">Thoughts</div>
-                <h2>Post Title 5</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
-            </div>
-            <div class="blog-post" data-category="work">
-                <div class="blog-identifier">Work</div>
-                <h2>Post Title 6</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu a ex vestibulum gravida.</p>
-            </div>
+            <!-- ... other posts ... -->
         </div>
     </div>
+
     <script>
+        // Update current time
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                `Current Local Time: ${now.toLocaleTimeString()}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Filter posts
         function filterPosts() {
             const filter = document.getElementById('filter').value;
-            const posts = document.querySelectorAll('.blog-post');
+            const posts = document.querySelectorAll('.archive-item');
             posts.forEach(post => {
                 if (filter === 'all' || post.getAttribute('data-category') === filter) {
                     post.style.display = '';
                 } else {
                     post.style.display = 'none';
                 }
+            });
+        }
+
+        // Close all function
+        function closeAll() {
+            document.querySelectorAll('.archive-item').forEach(item => {
+                item.classList.remove('expanded');
             });
         }
     </script>
