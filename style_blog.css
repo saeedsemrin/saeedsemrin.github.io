@@ -178,3 +178,13 @@ select {
         grid-template-columns: repeat(3, 1fr);
     }
 }
+
+.post-link {
+    color: black;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.post-link:hover {
+    opacity: 0.7;
+}
