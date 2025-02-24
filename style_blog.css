@@ -127,13 +127,19 @@ select {
 
 .archive-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);  /* Always show 3 columns */
+    gap: 0;  /* Remove gap between items */
+    border-top: 1px solid #eee;
+    border-left: 1px solid #eee;
 }
 
 .archive-item {
+    border-right: 1px solid #eee;
     border-bottom: 1px solid #eee;
-    padding: 20px 0;
+    padding: 20px;
+    min-height: 200px;  /* Set minimum height for consistency */
+    display: flex;
+    flex-direction: column;
 }
 
 .item-category {
@@ -169,13 +175,20 @@ select {
 
 @media (min-width: 768px) {
     .archive-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);  /* Keep 3 columns at all sizes */
     }
 }
 
 @media (min-width: 1024px) {
     .archive-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, 1fr);  /* Keep 3 columns at all sizes */
+    }
+}
+
+/* Add some responsive padding for smaller screens */
+@media (max-width: 768px) {
+    .archive-container {
+        padding: 10px;
     }
 }
 
