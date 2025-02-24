@@ -65,8 +65,7 @@ a {
     top: 10px;
     left: 10px;
     text-align: left;
-    max-width: calc(100% - 200px); /* Use calc to make it responsive, leaving space for top-right */
-    margin-right: 180px; /* Add margin to prevent overlap with top-right element */
+    margin-right: 200px; /* Increased margin slightly */
     font-family: "Courier Bold", "Courier New", Courier, monospace;
     color: #333;
     font-size: 14px;
