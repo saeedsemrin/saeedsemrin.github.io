@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>post title</title>
+    <link rel="stylesheet" href="../style_blog.css">
+</head>
+<body>
+    <div class="archive-container">
+        <div class="nav-header">
+            <div class="nav-links">
+                <a href="/" class="home-link">home</a>
+                <span class="nav-separator">/</span>
+                <a href="/blog.html" class="home-link">blog</a>
+            </div>
+            <div class="current-time" id="currentTime"></div>
+        </div>
+        
+        <article class="blog-post-content">
+            <div class="post-meta">
+                <span class="post-date">month day, year</span>
+                <span class="post-location">location</span>
+                <span class="post-category">category</span>
+            </div>
+            
+            <h1>post title</h1>
+            
+            <!-- Post content goes here -->
+            <p>post content paragraph</p>
+            
+            <!-- Add more paragraphs as needed -->
+            <p>additional paragraphs...</p>
+        </article>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                `current local time: ${now.toLocaleTimeString()}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html> 
