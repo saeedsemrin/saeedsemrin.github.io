@@ -65,7 +65,7 @@ a {
     top: 10px;
     left: 10px;
     text-align: left;
-    max-width: 1000px;
+    max-width: 1100px; /* Increased from 300px to allow more width */
     font-family: "Courier Bold", "Courier New", Courier, monospace;
     color: #333;
     font-size: 14px;
