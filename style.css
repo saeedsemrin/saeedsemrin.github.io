@@ -7,7 +7,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #f4f4f4;
+    background-color: #ffffff; /* Changed from #f4f4f4 to pure white */
 }
 #logo {
     width: 200px;
@@ -65,8 +65,7 @@ a {
     top: 10px;
     left: 10px;
     text-align: left;
-    padding: 10px;
-    max-width: 300px; /* Limit width for readability */
+    max-width: 300px;
     font-family: Arial, sans-serif;
     color: #333;
     font-size: 14px;
