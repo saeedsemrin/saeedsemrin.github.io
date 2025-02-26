@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>on consistency</title>
+    <link rel="stylesheet" href="../style_blog.css">
+</head>
+<body>
+    <div class="archive-container">
+        <div class="nav-header">
+            <div class="nav-links">
+                <a href="/" class="home-link">home</a>
+                <span class="nav-separator">/</span>
+                <a href="/blog.html" class="home-link">blog</a>
+            </div>
+            <div class="current-time" id="currentTime"></div>
+        </div>
+        
+        <article class="blog-post-content">
+            <div class="post-meta">
+                <span class="post-date">february 21, 2024</span>
+                <span class="post-location">denver</span>
+                <span class="post-category">thoughts</span>
+            </div>
+            
+            <h1>on consistency</h1>
+            
+            <p>forming positive habits is extremely important for living a meaningful life. this is something everyone knows. now the hard part is the execution of these habits. structuring your day in order to make time for the things that you care about. being unreasonable disciplined in your day to day allows for more time for yourself than you'd ever had before. execution is the hardest part.</p>
+            
+            <p>for myself, i had slipped into a cycle of bad habits. partly due to ignorance, mostly due to inaction. building habits is basically weeding out activities that don't serve your bigger goals. the faster you can subtract these bad habits, the faster you can benefit from the compounding of the good ones.</p>
+            
+            <p>i think we all have grandiose goals in life. for myself i want to be the best athlete i can be. what does that take? waking up at 5 am to get workouts in, doing mobility at night even when the tv or other distractions are calling. the more i commit to what i truly care about, and subtract the negative, everything feels better. my soul, my body and my happiness. because i am meeting the expectation of myself. being a highly ambitious person without the work ethic to match it is a recipe for disaster. and by disaster i mean depression, anxiety, negative self-talk. all thing that are counter-productive to the larger goal, the larger vision.</p>
+            
+            <p>this is my manifesto to habit formation. my message to myself. i am so far from what i want to be, but where you cross that line and commit… that's when beautiful things happen.</p>
+            
+            <p class="quote">"discipline is freedom" - jocko willink</p>
+        </article>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                `current local time: ${now.toLocaleTimeString()}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html> 
