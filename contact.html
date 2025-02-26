@@ -13,21 +13,10 @@
             <span class="nav-separator">/</span>
             <a href="/blog.html" class="home-link">blog</a>
         </div>
-        <div class="current-time" id="currentTime"></div>
     </div>
 
     <div class="contact-container">
         <p>contact me at: <a href="mailto:saeedsemrin@gmail.com">saeedsemrin@gmail.com</a></p>
     </div>
-
-    <script>
-        function updateTime() {
-            const now = new Date();
-            document.getElementById('currentTime').textContent = 
-                `current local time: ${now.toLocaleTimeString()}`;
-        }
-        setInterval(updateTime, 1000);
-        updateTime();
-    </script>
 </body>
 </html>
