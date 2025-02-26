@@ -176,3 +176,24 @@ a {
     text-decoration: none;
     color: black;
 }
+
+/* Contact Page Styles */
+.contact-container {
+    width: 100%;
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: left;
+}
+
+.contact-container p {
+    font-family: "Courier Bold", "Courier New", Courier, monospace;
+    color: #333;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.contact-container a {
+    color: #0000ff;
+    text-decoration: underline;
+}
