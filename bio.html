@@ -8,6 +8,15 @@
     <link rel="shortcut icon" type="image/x-icon" href="icon.ico">
 </head>
 <body>
+    <div class="nav-header">
+        <div class="nav-links">
+            <a href="/" class="home-link">home</a>
+            <span class="nav-separator">/</span>
+            <a href="/blog.html" class="home-link">blog</a>
+        </div>
+        <div class="current-time" id="currentTime"></div>
+    </div>
+
     <img id="logo" src="picasso.png" alt="add logo">
     <a href="index.html" id="main-name">saeed semrin</a>
     <a href="bio.html">bio</a>
@@ -34,5 +43,15 @@
             <b> November 10, 1998: </b> Born in Boston, Massachusetts. Lived there only long enough to recognize Tom Bradys face. Go Pats.
         </p>
     </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                `current local time: ${now.toLocaleTimeString()}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
 </body>
 </html>

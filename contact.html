@@ -3,24 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            text-align: center;
-        }
-    </style>
+    <title>contact</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="nav-header">
+        <div class="nav-links">
+            <a href="/" class="home-link">home</a>
+            <span class="nav-separator">/</span>
+            <a href="/blog.html" class="home-link">blog</a>
+        </div>
+        <div class="current-time" id="currentTime"></div>
+    </div>
+
     <div class="container">
         <p>contact me at: <a href="mailto:saeedsemrin@gmail.com">saeedsemrin@gmail.com</a></p>
     </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                `current local time: ${now.toLocaleTimeString()}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
 </body>
 </html>

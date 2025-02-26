@@ -155,9 +155,24 @@ a {
     display: flex;
     justify-content: space-between;
     margin-bottom: 40px;
-    font-size: 0.9em;
 }
 
-.current-time, .location {
+.nav-links {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.nav-separator {
+    color: black;
+}
+
+.current-time {
+    font-size: 0.9em;
+    color: black;
+}
+
+.home-link {
+    text-decoration: none;
     color: black;
 }
