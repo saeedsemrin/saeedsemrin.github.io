@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>putting your best foot forward</title>
+    <link rel="stylesheet" href="../style_blog.css">
+</head>
+<body>
+    <div class="archive-container">
+        <div class="nav-header">
+            <div class="nav-links">
+                <a href="/" class="home-link">home</a>
+                <span class="nav-separator">/</span>
+                <a href="/blog.html" class="home-link">blog</a>
+            </div>
+            <div class="current-time" id="currentTime"></div>
+        </div>
+        
+        <article class="blog-post-content">
+            <div class="post-meta">
+                <span class="post-date">february 25, 2025</span>
+                <span class="post-location">denver</span>
+                <span class="post-category">thoughts</span>
+            </div>
+            
+            <h1>putting your best foot forward</h1>
+            
+            <p>putting your best foot forward has been essential since the dawn of time. theres a reason for the saying "a first impression lasts a lifetime". because it does. the reason for this post is because sometimes i find myself not doing that. i can let my mood, situation, energy, affect the way that i present myself to people. it's a yo-yo for me. sometimes too reserved and almost anxious, or too giddy, trying to be a comedian when people are just looking to learn more about you. finding that balance is essential to creating the life that you want.</p>
+            
+            <p>that being said, sometimes i am dialed tf in. my issue with that is there is a lack of consistency. and consistency is the key to this idea. being consistent in all aspects of your life is essential to being that person that you want to be. that starts with being consistent with yourself in your day to day. especially if you are more introverted naturally. know yourself.</p>
+            
+            <p>that's where i am looking to improve myself this coming month, creating consistency is all aspects of my life so that i can be present with others. get out of your own head and get out of your own way. living a life of intention is all that i want, and i think the same of whoever is reading this. be hard on yourself, because only you will.</p>
+            
+            <p class="quote">"your worst sin is that you have destroyed and betrayed yourself for nothing" - fydor dostoevsky</p>
+        </article>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                `current local time: ${now.toLocaleTimeString()}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html> 
