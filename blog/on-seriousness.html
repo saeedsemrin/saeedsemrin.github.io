@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>on seriousness</title>
+    <link rel="stylesheet" href="../style_blog.css">
+</head>
+<body>
+    <div class="archive-container">
+        <div class="nav-header">
+            <div class="nav-links">
+                <a href="/" class="home-link">home</a>
+                <span class="nav-separator">/</span>
+                <a href="/blog.html" class="home-link">blog</a>
+            </div>
+            <div class="current-time" id="currentTime"></div>
+        </div>
+        
+        <article class="blog-post-content">
+            <div class="post-meta">
+                <span class="post-date">february 27, 2025</span>
+                <span class="post-location">denver</span>
+                <span class="post-category">thoughts</span>
+            </div>
+            
+            <h1>on seriousness</h1>
+            
+            <p>everything i've posted so far has been on the more serious side of the "serious / fun" spectrum. not for a particular reason, or that it's my personal mentality and personal goal, but because that's just where i am at in my life. i love fun, my life has been extremely fun, and that's not going to change. but at this moment of time, seriousness is what is needed, and that's just how i feel right now. some may say (and some have said to me) that i am too hard on myself and too serious at certain times, but idk, that's just how i feel. i have a deep desire for perfect execution, perfection in my physical pursuits, perfection in my professional pursuits and perfection in my pursuit for more knowledge and constant learning. when i type it out it overwhelms me a little, mostly because i have been complacent in training my mind and body.</p>
+            
+            <p>but i can think of nothing more noble of of pursuit. balancing that spectrum is not difficult, it just takes commitment. and discipline (as stated in my past posts. there is no time to think of overallocation to one mindset, you commit to focus, that is fun. it's just difficult. breaking the cycle of selling yourself short, to yourself.</p>
+            
+            <p>and that's why i made this blog, to document my personal journey through life in achieving to what i want my life to be. some may think it's cringy. frankly, i don't care. im just going to keep doing what is in my heart and soul without hesitation. no more regrets. i cannot live that way anymore. the past is the past, no more thinking about it just how i can change my future, that's all that matters.</p>
+            
+            <p class="quote">"there is nothing noble in being superior to your fellow man; true nobility is being superior to your former self." - ernest hemingway</p>
+        </article>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                `current local time: ${now.toLocaleTimeString()}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html> 
