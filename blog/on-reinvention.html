@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>on reinvention</title>
+    <link rel="stylesheet" href="../style_blog.css">
+</head>
+<body>
+    <div class="archive-container">
+        <div class="nav-header">
+            <div class="nav-links">
+                <a href="/" class="home-link">home</a>
+                <span class="nav-separator">/</span>
+                <a href="/blog.html" class="home-link">blog</a>
+            </div>
+            <div class="current-time" id="currentTime"></div>
+        </div>
+        
+        <article class="blog-post-content">
+            <div class="post-meta">
+                <span class="post-date">march 5, 2025</span>
+                <span class="post-location">denver</span>
+                <span class="post-category">thoughts</span>
+            </div>
+            
+            <h1>on reinvention</h1>
+            
+            <p>the process of reinventing yourself is quite a journey. constant work, proving to yourself who you are every day, developing the confidence in this person you are becoming. i believe that everyone wants to be something else, change a part of them, change the way they think about themselves. i certainly do. but i find it to be a two sided coin with building that trust.</p>
+            
+            <p>everyone changes over time. but to what degree is variable. some people only grow a fraction over a 10 year period and some people completely reinvent themselves in a few months. it's a combination of confidence and commitment. the ability to completely turn yourself around, 180 degrees and commit too it. hard fucking work right there. obviously there's a few factors, but it just takes work.</p>
+            
+            <p>the work for me is easy. read, reflect, apply. not in that order but sometimes. just constantly learning and growing. the hard part can be your community. it's easy to change who how you see yourself, but getting others to recognize the change in you is difficult, especially those close to you, or those who have know you for a considerable period of time. i've felt the preconceived notion of who you are in their eyes and they hold you to the ideas or thoughts or behaviors you had at a different stage of life. to get someone to recognize who you now are is challenging but wow is it unbelievably worth it. it is a renaissance in personal development.</p>
+            
+            <p>that all being said, the hardest part is changing some of the self beliefs from childhood. i'll get more into this on another post but wow is it destructive as an adult. to disconnect from a past of trauma and self destruction is very difficult. to change the thought patterns in my mind has been the hardest thing, like walking on lego's that are on fire. so much discipline and intention. and it takes me back to my first thought of just being disciplined and consistent. if you read some of the my other posts, this is truly why i do all of this. to change the way i look at myself, change the perspective of the world i hold and change how your brain can poison your thought process. it's all just work. let's get after it brother.</p>
+            
+            <p>venture into that darkness of only you knowing who you are. slowly change perception and perspectives. be honest. never lie. live your life in a honorable way and all will follow. its hard.</p>
+        </article>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                `current local time: ${now.toLocaleTimeString()}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html> 
