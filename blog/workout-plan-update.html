@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>workout plan update</title>
+    <link rel="stylesheet" href="../style_blog.css">
+</head>
+<body>
+    <div class="archive-container">
+        <div class="nav-header">
+            <div class="nav-links">
+                <a href="/" class="home-link">home</a>
+                <span class="nav-separator">/</span>
+                <a href="/blog.html" class="home-link">blog</a>
+            </div>
+            <div class="current-time" id="currentTime"></div>
+        </div>
+        
+        <article class="blog-post-content">
+            <div class="post-meta">
+                <span class="post-date">march 6, 2025</span>
+                <span class="post-location">denver</span>
+                <span class="post-category">fitness</span>
+            </div>
+            
+            <h1>workout plan update</h1>
+            
+            <p>had to rethink the workout plan, was putting too much load onto the legs and was not really working on the most pertinent things.</p>
+            
+            <p>what we are getting rid of:</p>
+            <ul>
+                <li>vertical jump training</li>
+                <li>heavy lifting more than 1x a week. moving biweekly and more isometric focus</li>
+            </ul>
+            
+            <p>why?</p>
+            <p>because my body is not in a great sport biomechanics wise, need to focus more on movement patterns and mobility vs strength. strength has never been the problem, it's been my ability to translate the strength into performance. getting rid of some of the plyometric load will allow me to focus more time to biomechanics and mobility, which will have a far greater impact on my performance.</p>
+            
+            <p>so what are we doing?</p>
+            <ul>
+                <li>we will continue with speed training 3x a week in the gym, working great and applies directly to ultimate.</li>
+                <li>we will start focusing more on biomechanics and overall improving functionality
+                    <ul>
+                        <li>achilles and foot work every day (huge because have struggles with achilles tendonitis for a few seasons. also recovering from a bout of turf toe in college.</li>
+                        <li>goata three/four times a week. works really well for me.</li>
+                        <li>conor harris lower limb and shoulder work. this is daily drills and 3 times in the gym a week at some moments.</li>
+                        <li>all of this should take around 1-1.5 hours to do to completion</li>
+                    </ul>
+                </li>
+                <li>frisbee specific work
+                    <ul>
+                        <li>conditioning 3x a week</li>
+                        <li>agility as a warm up 3x a week</li>
+                        <li>patterns 2/3 times a week</li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <p>how do we make it sustainable?</p>
+            <ul>
+                <li>little stretching sessions after workouts and before bed</li>
+                <li>portal thermaculture, going multiple times a week has changed my ability to take on load.</li>
+            </ul>
+            
+            <p>well that's that, get ready for an update this coming sunday.</p>
+        </article>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                `current local time: ${now.toLocaleTimeString()}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html> 
