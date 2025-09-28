@@ -198,3 +198,178 @@ a {
     color: #0000ff;
     text-decoration: underline;
 }
+
+/* Workout Log Page Styles */
+.workout-log-body {
+    background-color: #ffffff;
+    font-family: "Courier Bold", "Courier New", Courier, monospace;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+.workout-header {
+    margin-bottom: 30px;
+}
+
+.workout-header h1 {
+    font-size: 2.5em;
+    color: #333;
+    margin: 0 0 10px 0;
+}
+
+.user-status {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.user-status a {
+    color: #0000ff;
+    text-decoration: underline;
+}
+
+.workout-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 0 20px;
+}
+
+.nav-controls {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-link {
+    color: #0000ff;
+    text-decoration: underline;
+    font-size: 0.9em;
+}
+
+.view-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.control-btn {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    font-size: 0.8em;
+    cursor: pointer;
+    font-family: "Courier Bold", "Courier New", Courier, monospace;
+}
+
+.control-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.user-date-section {
+    margin-bottom: 30px;
+}
+
+.user-name {
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+    margin: 0 0 10px 0;
+}
+
+.date-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.date-nav-link {
+    color: #0000ff;
+    text-decoration: underline;
+    font-size: 0.9em;
+}
+
+.current-week {
+    font-size: 1em;
+    color: #333;
+}
+
+.workout-table-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.workout-table {
+    border-collapse: collapse;
+    width: 90%;
+    max-width: 1000px;
+    background-color: #ffffff;
+}
+
+.workout-table th,
+.workout-table td {
+    border: 1px solid #ddd;
+    padding: 15px 10px;
+    text-align: center;
+    font-family: "Courier Bold", "Courier New", Courier, monospace;
+}
+
+.workout-table th {
+    background-color: #ffb366;
+    color: #333;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.workout-table th:first-child {
+    background-color: #ffb366;
+}
+
+.workout-table td:first-child {
+    background-color: #ffb366;
+    font-weight: bold;
+}
+
+.user-row-header {
+    background-color: #ffb366;
+}
+
+.user-link {
+    color: #0000ff;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.create-entry-link {
+    color: #0000ff;
+    text-decoration: underline;
+    font-size: 0.9em;
+}
+
+.workout-cell {
+    background-color: #ffffff;
+}
+
+.workout-footer {
+    margin-top: 40px;
+}
+
+.go-back-link {
+    color: #0000ff;
+    text-decoration: underline;
+    font-size: 0.9em;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.copyright {
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 20px;
+}
+
+.copyright a {
+    color: #0000ff;
+    text-decoration: underline;
+}
