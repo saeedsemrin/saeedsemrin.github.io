@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broken Promises</title>
+    <link rel="stylesheet" href="../style_blog.css">
+</head>
+<body>
+    <div class="archive-container">
+        <div class="nav-header">
+            <div class="nav-links">
+                <a href="/" class="home-link">home</a>
+                <span class="nav-separator">/</span>
+                <a href="/blog.html" class="home-link">blog</a>
+            </div>
+            <div class="current-time" id="currentTime"></div>
+        </div>
+        
+        <article class="blog-post-content">
+            <div class="post-meta">
+                <span class="post-date">january 15, 2025</span>
+                <span class="post-location">denver</span>
+                <span class="post-category">thoughts</span>
+            </div>
+            
+            <h1>Broken Promises</h1>
+            
+            <p>When I look back at my life and the journey that it has been, there is one prevailing thought that comes to mind. It is documented across every journal, every notebook, every piece of paper that has ever donned my name that was addressed to myself. The story of a broken promise. In this story, promise has two meaning. One being a commitment someone has to someone or something; the other being the potential in a human. Promise. So far in my life, where it matters to me, I have not fulfilled each of those bargains to myself. It is the wrenching inside my gut, the ache inside my heart and the anguish I feel on a daily basis. The thought of what could've been if I had just listened to myself, listened to what my heart was saying.</p>
+            
+            <p>I say all of this in a moment of deep appreciation for my life. I find it hard to look back at a time where life has been better. The outlook of the future is filled with nothing but hope and desire. I feel a sense of vigor that hasn't been felt since my childhood. I say all of this about promise, because I truly believe that at any moment, you can change it all.</p>
+            
+            <p>This is what my heart is telling me, so clearly that the words could be heard from miles away. All aching I feel, it is a sign that I know there is something greater than what I am experiencing now.</p>
+            
+            <p>A broken promise is the fracturing of a dream. A small shift in the cosmic alignment of your life. The path you take has been shifted every so slightly. But. When the path is followed, the picture becomes ever so clear. The journey it was it was intended to be. No more broken promises.</p>
+        </article>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                `current local time: ${now.toLocaleTimeString()}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
