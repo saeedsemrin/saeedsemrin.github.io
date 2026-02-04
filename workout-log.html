@@ -34,18 +34,35 @@
             align-items: center;
         }
 
-        .week-nav a {
-            color: black;
-            text-decoration: none;
+        .week-nav button {
+            background: none;
+            border: 1px solid #ccc;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 0.9em;
         }
 
-        .week-nav a:hover {
-            opacity: 0.7;
+        .week-nav button:hover {
+            background: #f5f5f5;
         }
 
         .current-week-label {
             font-size: 1.2em;
             font-weight: bold;
+            min-width: 180px;
+            text-align: center;
+        }
+
+        .today-btn {
+            margin-left: 10px;
+            background: #0000ff !important;
+            color: white !important;
+            border-color: #0000ff !important;
+        }
+
+        .today-btn:hover {
+            background: #0000cc !important;
         }
 
         .workout-grid {
@@ -61,6 +78,20 @@
             padding: 10px;
             display: flex;
             flex-direction: column;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .day-cell:hover {
+            background-color: #f5f5f5;
+        }
+
+        .day-cell.today {
+            background-color: #fffdf0;
+        }
+
+        .day-cell.today:hover {
+            background-color: #fff8e0;
         }
 
         .day-header {
@@ -99,6 +130,12 @@
             font-size: 0.9em;
         }
 
+        .add-hint {
+            color: #ccc;
+            font-size: 0.8em;
+            margin-top: auto;
+        }
+
         .stats-section {
             margin-top: 40px;
             padding: 20px;
@@ -133,6 +170,120 @@
             color: #666;
         }
 
+        /* Modal styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            border-radius: 4px;
+        }
+
+        .modal h3 {
+            margin: 0 0 20px 0;
+            font-size: 1.2em;
+        }
+
+        .modal-date {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            font-family: Arial, sans-serif;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 1em;
+        }
+
+        .btn-save {
+            background: #0000ff;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #0000cc;
+        }
+
+        .btn-cancel {
+            background: #eee;
+        }
+
+        .btn-cancel:hover {
+            background: #ddd;
+        }
+
+        .btn-delete {
+            background: #ff4444;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #cc0000;
+        }
+
+        .btn-rest {
+            background: #999;
+            color: white;
+        }
+
+        .btn-rest:hover {
+            background: #777;
+        }
+
         @media (max-width: 768px) {
             .workout-grid {
                 grid-template-columns: 1fr;
@@ -145,6 +296,10 @@
             .week-header {
                 flex-direction: column;
                 gap: 15px;
+            }
+
+            .day-cell {
+                min-height: 100px;
             }
         }
     </style>
@@ -163,9 +318,10 @@
         <div class="workout-container">
             <div class="week-header">
                 <div class="week-nav">
-                    <a href="#">&larr; prev week</a>
+                    <button id="prevWeek">&larr; prev</button>
                     <span class="current-week-label" id="weekLabel">this week</span>
-                    <a href="#">next week &rarr;</a>
+                    <button id="nextWeek">next &rarr;</button>
+                    <button id="todayBtn" class="today-btn">today</button>
                 </div>
             </div>
 
@@ -197,6 +353,51 @@
         </div>
     </div>
 
+    <!-- Add/Edit Workout Modal -->
+    <div class="modal-overlay" id="workoutModal">
+        <div class="modal">
+            <h3 id="modalTitle">add workout</h3>
+            <div class="modal-date" id="modalDate"></div>
+
+            <div class="form-group">
+                <label for="workoutType">type</label>
+                <select id="workoutType">
+                    <option value="">select type...</option>
+                    <option value="push">push</option>
+                    <option value="pull">pull</option>
+                    <option value="legs">legs</option>
+                    <option value="upper">upper</option>
+                    <option value="lower">lower</option>
+                    <option value="full body">full body</option>
+                    <option value="cardio">cardio</option>
+                    <option value="hiit">hiit</option>
+                    <option value="mobility">mobility</option>
+                    <option value="sports">sports</option>
+                    <option value="other">other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="workoutDetails">details</label>
+                <textarea id="workoutDetails" placeholder="e.g., bench press, squats, running..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="workoutMinutes">duration (minutes)</label>
+                <input type="number" id="workoutMinutes" placeholder="60" min="0">
+            </div>
+
+            <div class="modal-buttons">
+                <button class="btn-cancel" id="cancelBtn">cancel</button>
+                <button class="btn-rest" id="restBtn">rest day</button>
+                <button class="btn-save" id="saveBtn">save</button>
+            </div>
+            <div class="modal-buttons" style="margin-top: 10px;">
+                <button class="btn-delete" id="deleteBtn" style="display: none;">delete</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Update time
         function updateTime() {
@@ -207,20 +408,27 @@
         setInterval(updateTime, 1000);
         updateTime();
 
-        // Sample workout data - replace with your actual data
-        const workouts = {
-            // Format: 'YYYY-MM-DD': { type: 'workout type', details: 'description', minutes: 60 }
-            // Example entries:
-            // '2025-02-03': { type: 'push', details: 'bench, ohp, triceps', minutes: 75 },
-            // '2025-02-04': { type: 'pull', details: 'deadlift, rows, biceps', minutes: 70 },
-        };
+        // State
+        let currentWeekOffset = 0;
+        let selectedDate = null;
 
-        // Get current week dates
-        function getWeekDates() {
+        // Load workouts from localStorage
+        function loadWorkouts() {
+            const saved = localStorage.getItem('workouts');
+            return saved ? JSON.parse(saved) : {};
+        }
+
+        // Save workouts to localStorage
+        function saveWorkouts(workouts) {
+            localStorage.setItem('workouts', JSON.stringify(workouts));
+        }
+
+        // Get week dates for a given offset (0 = current week, -1 = last week, 1 = next week)
+        function getWeekDates(offset = 0) {
             const today = new Date();
             const dayOfWeek = today.getDay();
             const monday = new Date(today);
-            monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+            monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1) + (offset * 7));
 
             const days = [];
             for (let i = 0; i < 7; i++) {
@@ -233,7 +441,15 @@
 
         // Format date as YYYY-MM-DD
         function formatDate(date) {
-            return date.toISOString().split('T')[0];
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // Format date for display
+        function formatDateDisplay(date) {
+            return date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
         }
 
         // Get day name
@@ -244,7 +460,9 @@
         // Render the workout grid
         function renderWorkoutGrid() {
             const grid = document.getElementById('workoutGrid');
-            const weekDates = getWeekDates();
+            const weekDates = getWeekDates(currentWeekOffset);
+            const workouts = loadWorkouts();
+            const todayStr = formatDate(new Date());
 
             let totalWorkouts = 0;
             let totalMinutes = 0;
@@ -255,11 +473,11 @@
             weekDates.forEach(date => {
                 const dateStr = formatDate(date);
                 const workout = workouts[dateStr];
-                const isToday = formatDate(new Date()) === dateStr;
+                const isToday = todayStr === dateStr;
 
                 const cell = document.createElement('div');
-                cell.className = 'day-cell';
-                if (isToday) cell.style.backgroundColor = '#fffdf0';
+                cell.className = 'day-cell' + (isToday ? ' today' : '');
+                cell.onclick = () => openModal(date);
 
                 const header = document.createElement('div');
                 header.className = 'day-header';
@@ -274,20 +492,24 @@
 
                 if (workout) {
                     const entry = document.createElement('div');
-                    entry.className = 'workout-entry';
+                    entry.className = 'workout-entry' + (workout.type === 'rest' ? ' rest' : '');
                     entry.innerHTML = `
                         <div class="workout-type">${workout.type}</div>
-                        <div class="workout-details">${workout.details || ''}</div>
+                        ${workout.details ? `<div class="workout-details">${workout.details}</div>` : ''}
                     `;
                     cell.appendChild(entry);
-                    totalWorkouts++;
-                    totalMinutes += workout.minutes || 0;
-                } else if (date <= new Date()) {
-                    const entry = document.createElement('div');
-                    entry.className = 'workout-entry rest';
-                    entry.innerHTML = '<div class="workout-type">rest</div>';
-                    cell.appendChild(entry);
-                    restDays++;
+
+                    if (workout.type === 'rest') {
+                        restDays++;
+                    } else {
+                        totalWorkouts++;
+                        totalMinutes += workout.minutes || 0;
+                    }
+                } else {
+                    const hint = document.createElement('div');
+                    hint.className = 'add-hint';
+                    hint.textContent = '+ click to add';
+                    cell.appendChild(hint);
                 }
 
                 grid.appendChild(cell);
@@ -297,17 +519,151 @@
             document.getElementById('totalWorkouts').textContent = totalWorkouts;
             document.getElementById('totalMinutes').textContent = totalMinutes;
             document.getElementById('restDays').textContent = restDays;
+
+            // Calculate streak
+            calculateStreak();
+        }
+
+        // Calculate workout streak
+        function calculateStreak() {
+            const workouts = loadWorkouts();
+            let streak = 0;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            for (let i = 0; i <= 365; i++) {
+                const checkDate = new Date(today);
+                checkDate.setDate(today.getDate() - i);
+                const dateStr = formatDate(checkDate);
+
+                if (workouts[dateStr] && workouts[dateStr].type !== 'rest') {
+                    streak++;
+                } else if (i > 0) {
+                    break;
+                }
+            }
+
+            document.getElementById('streak').textContent = streak;
         }
 
         // Update week label
         function updateWeekLabel() {
-            const weekDates = getWeekDates();
+            const weekDates = getWeekDates(currentWeekOffset);
             const start = weekDates[0];
             const end = weekDates[6];
             const options = { month: 'short', day: 'numeric' };
-            document.getElementById('weekLabel').textContent =
-                `${start.toLocaleDateString('en-US', options)} - ${end.toLocaleDateString('en-US', options)}`;
+
+            let label = `${start.toLocaleDateString('en-US', options)} - ${end.toLocaleDateString('en-US', options)}`;
+
+            if (currentWeekOffset === 0) {
+                label += ' (this week)';
+            } else if (currentWeekOffset === -1) {
+                label += ' (last week)';
+            } else if (currentWeekOffset === 1) {
+                label += ' (next week)';
+            }
+
+            document.getElementById('weekLabel').textContent = label;
         }
+
+        // Modal functions
+        function openModal(date) {
+            selectedDate = date;
+            const dateStr = formatDate(date);
+            const workouts = loadWorkouts();
+            const workout = workouts[dateStr];
+
+            document.getElementById('modalDate').textContent = formatDateDisplay(date);
+            document.getElementById('workoutType').value = workout?.type || '';
+            document.getElementById('workoutDetails').value = workout?.details || '';
+            document.getElementById('workoutMinutes').value = workout?.minutes || '';
+
+            document.getElementById('modalTitle').textContent = workout ? 'edit workout' : 'add workout';
+            document.getElementById('deleteBtn').style.display = workout ? 'block' : 'none';
+
+            document.getElementById('workoutModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('workoutModal').classList.remove('active');
+            selectedDate = null;
+        }
+
+        function saveWorkout() {
+            if (!selectedDate) return;
+
+            const type = document.getElementById('workoutType').value;
+            const details = document.getElementById('workoutDetails').value.trim();
+            const minutes = parseInt(document.getElementById('workoutMinutes').value) || 0;
+
+            if (!type) {
+                alert('Please select a workout type');
+                return;
+            }
+
+            const dateStr = formatDate(selectedDate);
+            const workouts = loadWorkouts();
+
+            workouts[dateStr] = { type, details, minutes };
+            saveWorkouts(workouts);
+
+            closeModal();
+            renderWorkoutGrid();
+        }
+
+        function markRestDay() {
+            if (!selectedDate) return;
+
+            const dateStr = formatDate(selectedDate);
+            const workouts = loadWorkouts();
+
+            workouts[dateStr] = { type: 'rest', details: '', minutes: 0 };
+            saveWorkouts(workouts);
+
+            closeModal();
+            renderWorkoutGrid();
+        }
+
+        function deleteWorkout() {
+            if (!selectedDate) return;
+
+            const dateStr = formatDate(selectedDate);
+            const workouts = loadWorkouts();
+
+            delete workouts[dateStr];
+            saveWorkouts(workouts);
+
+            closeModal();
+            renderWorkoutGrid();
+        }
+
+        // Event listeners
+        document.getElementById('prevWeek').onclick = () => {
+            currentWeekOffset--;
+            renderWorkoutGrid();
+            updateWeekLabel();
+        };
+
+        document.getElementById('nextWeek').onclick = () => {
+            currentWeekOffset++;
+            renderWorkoutGrid();
+            updateWeekLabel();
+        };
+
+        document.getElementById('todayBtn').onclick = () => {
+            currentWeekOffset = 0;
+            renderWorkoutGrid();
+            updateWeekLabel();
+        };
+
+        document.getElementById('cancelBtn').onclick = closeModal;
+        document.getElementById('saveBtn').onclick = saveWorkout;
+        document.getElementById('restBtn').onclick = markRestDay;
+        document.getElementById('deleteBtn').onclick = deleteWorkout;
+
+        document.getElementById('workoutModal').onclick = (e) => {
+            if (e.target.id === 'workoutModal') closeModal();
+        };
 
         // Initialize
         renderWorkoutGrid();
