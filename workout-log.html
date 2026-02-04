@@ -546,6 +546,9 @@
         // Admin password (you can change this)
         const ADMIN_PASSWORD = "workout2025";
 
+        // Secret write token - must match Firebase rules
+        const WRITE_TOKEN = "wt_s33d_f1tn3ss_2025_x7k9m";
+
         // Update time
         function updateTime() {
             const now = new Date();
@@ -567,6 +570,8 @@
             return new Promise((resolve) => {
                 database.ref('workouts').once('value', (snapshot) => {
                     const data = snapshot.val() || {};
+                    // Remove the write token from data (don't expose it)
+                    delete data._token;
                     // Convert arrays stored as objects back to arrays
                     for (const date in data) {
                         if (data[date] && typeof data[date] === 'object' && !Array.isArray(data[date])) {
@@ -582,7 +587,9 @@
         // Save workouts to Firebase
         async function saveWorkoutsData(workouts) {
             workoutsCache = workouts;
-            await database.ref('workouts').set(workouts);
+            // Include the write token for Firebase security rules validation
+            const dataWithToken = { ...workouts, _token: WRITE_TOKEN };
+            await database.ref('workouts').set(dataWithToken);
         }
 
         // Get week dates for a given offset
