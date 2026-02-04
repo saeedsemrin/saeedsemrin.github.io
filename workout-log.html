@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>workout log | saeed semrin</title>
+    <meta name="description" content="Saeed Semrin's workout log - tracking fitness progress and goals.">
+    <meta property="og:title" content="Workout Log | Saeed Semrin">
+    <meta property="og:description" content="Tracking fitness progress and goals.">
+    <meta property="og:image" content="https://saeedsemrin.com/picasso.png">
+    <meta property="og:url" content="https://saeedsemrin.com/workout-log.html">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="style_blog.css">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        .workout-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .week-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .week-nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .week-nav a {
+            color: black;
+            text-decoration: none;
+        }
+
+        .week-nav a:hover {
+            opacity: 0.7;
+        }
+
+        .current-week-label {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .workout-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0;
+            border: 1px solid #eee;
+        }
+
+        .day-cell {
+            border: 1px solid #eee;
+            min-height: 150px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .day-header {
+            font-size: 0.8em;
+            color: #666;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .day-date {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .workout-entry {
+            background: #f9f9f9;
+            padding: 8px;
+            margin-bottom: 5px;
+            font-size: 0.85em;
+            border-left: 3px solid #ffb366;
+        }
+
+        .workout-entry.rest {
+            border-left-color: #ccc;
+            color: #999;
+        }
+
+        .workout-type {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .workout-details {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .stats-section {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f9f9f9;
+            border: 1px solid #eee;
+        }
+
+        .stats-title {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .workout-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .week-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="archive-container">
+        <div class="nav-header">
+            <div class="nav-links">
+                <a href="/" class="home-link">home</a>
+                <span class="nav-separator">/</span>
+                <a href="/blog.html" class="home-link">blog</a>
+            </div>
+            <div class="current-time" id="currentTime"></div>
+        </div>
+
+        <div class="workout-container">
+            <div class="week-header">
+                <div class="week-nav">
+                    <a href="#">&larr; prev week</a>
+                    <span class="current-week-label" id="weekLabel">this week</span>
+                    <a href="#">next week &rarr;</a>
+                </div>
+            </div>
+
+            <div class="workout-grid" id="workoutGrid">
+                <!-- Days will be populated by JavaScript -->
+            </div>
+
+            <div class="stats-section">
+                <div class="stats-title">weekly stats</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalWorkouts">0</div>
+                        <div class="stat-label">workouts</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalMinutes">0</div>
+                        <div class="stat-label">minutes</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="restDays">0</div>
+                        <div class="stat-label">rest days</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="streak">0</div>
+                        <div class="stat-label">day streak</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent =
+                `current local time: ${now.toLocaleTimeString()}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Sample workout data - replace with your actual data
+        const workouts = {
+            // Format: 'YYYY-MM-DD': { type: 'workout type', details: 'description', minutes: 60 }
+            // Example entries:
+            // '2025-02-03': { type: 'push', details: 'bench, ohp, triceps', minutes: 75 },
+            // '2025-02-04': { type: 'pull', details: 'deadlift, rows, biceps', minutes: 70 },
+        };
+
+        // Get current week dates
+        function getWeekDates() {
+            const today = new Date();
+            const dayOfWeek = today.getDay();
+            const monday = new Date(today);
+            monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+
+            const days = [];
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(monday);
+                date.setDate(monday.getDate() + i);
+                days.push(date);
+            }
+            return days;
+        }
+
+        // Format date as YYYY-MM-DD
+        function formatDate(date) {
+            return date.toISOString().split('T')[0];
+        }
+
+        // Get day name
+        function getDayName(date) {
+            return date.toLocaleDateString('en-US', { weekday: 'short' }).toLowerCase();
+        }
+
+        // Render the workout grid
+        function renderWorkoutGrid() {
+            const grid = document.getElementById('workoutGrid');
+            const weekDates = getWeekDates();
+
+            let totalWorkouts = 0;
+            let totalMinutes = 0;
+            let restDays = 0;
+
+            grid.innerHTML = '';
+
+            weekDates.forEach(date => {
+                const dateStr = formatDate(date);
+                const workout = workouts[dateStr];
+                const isToday = formatDate(new Date()) === dateStr;
+
+                const cell = document.createElement('div');
+                cell.className = 'day-cell';
+                if (isToday) cell.style.backgroundColor = '#fffdf0';
+
+                const header = document.createElement('div');
+                header.className = 'day-header';
+                header.textContent = getDayName(date);
+
+                const dateLabel = document.createElement('div');
+                dateLabel.className = 'day-date';
+                dateLabel.textContent = date.getDate();
+
+                cell.appendChild(header);
+                cell.appendChild(dateLabel);
+
+                if (workout) {
+                    const entry = document.createElement('div');
+                    entry.className = 'workout-entry';
+                    entry.innerHTML = `
+                        <div class="workout-type">${workout.type}</div>
+                        <div class="workout-details">${workout.details || ''}</div>
+                    `;
+                    cell.appendChild(entry);
+                    totalWorkouts++;
+                    totalMinutes += workout.minutes || 0;
+                } else if (date <= new Date()) {
+                    const entry = document.createElement('div');
+                    entry.className = 'workout-entry rest';
+                    entry.innerHTML = '<div class="workout-type">rest</div>';
+                    cell.appendChild(entry);
+                    restDays++;
+                }
+
+                grid.appendChild(cell);
+            });
+
+            // Update stats
+            document.getElementById('totalWorkouts').textContent = totalWorkouts;
+            document.getElementById('totalMinutes').textContent = totalMinutes;
+            document.getElementById('restDays').textContent = restDays;
+        }
+
+        // Update week label
+        function updateWeekLabel() {
+            const weekDates = getWeekDates();
+            const start = weekDates[0];
+            const end = weekDates[6];
+            const options = { month: 'short', day: 'numeric' };
+            document.getElementById('weekLabel').textContent =
+                `${start.toLocaleDateString('en-US', options)} - ${end.toLocaleDateString('en-US', options)}`;
+        }
+
+        // Initialize
+        renderWorkoutGrid();
+        updateWeekLabel();
+    </script>
+</body>
+</html>

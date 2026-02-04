@@ -1,5 +1,5 @@
 body {
-    font-family: "Courier Bold", "Courier New", Courier, monospace;
+    font-family: Arial, sans-serif;
     text-align: center;
     margin: 0;
     height: 100vh;
@@ -7,7 +7,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #ffffff; /* Changed from #f4f4f4 to pure white */
+    background-color: #ffffff;
 }
 #logo {
     width: 200px;
@@ -47,7 +47,7 @@ a {
 
 #top-right div {
     margin: 5px 0;
-    font-family: "Courier Bold", "Courier New", Courier, monospace;
+    font-family: Arial, sans-serif;
     color: #333;
     font-size: 14px;
 }
@@ -63,10 +63,49 @@ a {
     left: 10px;
     text-align: left;
     width: calc(100% - 220px);
-    font-family: "Courier Bold", "Courier New", Courier, monospace;
+    font-family: Arial, sans-serif;
     color: #333;
     font-size: 14px;
     line-height: 1.4;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    #top-left {
+        position: relative;
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    #top-right {
+        position: relative;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    body {
+        height: auto;
+        min-height: 100vh;
+        padding: 20px 10px;
+    }
+
+    #logo {
+        width: 150px;
+    }
+
+    .bio-content {
+        padding: 10px;
+    }
+
+    .contact-container {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        padding: 20px 10px;
+    }
 }
 
 /* Blog Page Styles */
@@ -187,7 +226,7 @@ a {
 }
 
 .contact-container p {
-    font-family: "Courier Bold", "Courier New", Courier, monospace;
+    font-family: Arial, sans-serif;
     color: #333;
     font-size: 14px;
     line-height: 1.4;
@@ -202,7 +241,7 @@ a {
 /* Workout Log Page Styles */
 .workout-log-body {
     background-color: #ffffff;
-    font-family: "Courier Bold", "Courier New", Courier, monospace;
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
     text-align: center;
@@ -258,7 +297,7 @@ a {
     padding: 5px 10px;
     font-size: 0.8em;
     cursor: pointer;
-    font-family: "Courier Bold", "Courier New", Courier, monospace;
+    font-family: Arial, sans-serif;
 }
 
 .control-btn:hover {
@@ -312,7 +351,7 @@ a {
     border: 1px solid #ddd;
     padding: 15px 10px;
     text-align: center;
-    font-family: "Courier Bold", "Courier New", Courier, monospace;
+    font-family: Arial, sans-serif;
 }
 
 .workout-table th {
