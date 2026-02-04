@@ -78,20 +78,10 @@
             padding: 10px;
             display: flex;
             flex-direction: column;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .day-cell:hover {
-            background-color: #f5f5f5;
         }
 
         .day-cell.today {
             background-color: #fffdf0;
-        }
-
-        .day-cell.today:hover {
-            background-color: #fff8e0;
         }
 
         .day-header {
@@ -113,6 +103,12 @@
             margin-bottom: 5px;
             font-size: 0.85em;
             border-left: 3px solid #ffb366;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .workout-entry:hover {
+            background: #f0f0f0;
         }
 
         .workout-entry.rest {
@@ -130,10 +126,21 @@
             font-size: 0.9em;
         }
 
-        .add-hint {
-            color: #ccc;
-            font-size: 0.8em;
+        .add-workout-btn {
             margin-top: auto;
+            padding: 6px 10px;
+            background: none;
+            border: 1px dashed #ccc;
+            color: #999;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 0.8em;
+            transition: all 0.2s;
+        }
+
+        .add-workout-btn:hover {
+            border-color: #0000ff;
+            color: #0000ff;
         }
 
         .stats-section {
@@ -191,13 +198,15 @@
         .modal {
             background: white;
             padding: 30px;
-            max-width: 400px;
+            max-width: 450px;
             width: 90%;
             border-radius: 4px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal h3 {
-            margin: 0 0 20px 0;
+            margin: 0 0 10px 0;
             font-size: 1.2em;
         }
 
@@ -205,6 +214,67 @@
             color: #666;
             font-size: 0.9em;
             margin-bottom: 20px;
+        }
+
+        .existing-workouts {
+            margin-bottom: 20px;
+        }
+
+        .existing-workouts-title {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .existing-workout-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #f9f9f9;
+            border-left: 3px solid #ffb366;
+            margin-bottom: 8px;
+        }
+
+        .existing-workout-item.rest {
+            border-left-color: #ccc;
+        }
+
+        .existing-workout-info {
+            flex: 1;
+        }
+
+        .existing-workout-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .existing-workout-actions button {
+            padding: 4px 10px;
+            font-size: 0.8em;
+            border: none;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+        }
+
+        .btn-edit-small {
+            background: #eee;
+        }
+
+        .btn-delete-small {
+            background: #ffcccc;
+            color: #cc0000;
+        }
+
+        .form-divider {
+            border-top: 1px solid #eee;
+            margin: 20px 0;
+            padding-top: 20px;
+        }
+
+        .form-divider-title {
+            font-weight: bold;
+            margin-bottom: 15px;
         }
 
         .form-group {
@@ -231,7 +301,7 @@
 
         .form-group textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 60px;
         }
 
         .modal-buttons {
@@ -359,41 +429,51 @@
             <h3 id="modalTitle">add workout</h3>
             <div class="modal-date" id="modalDate"></div>
 
-            <div class="form-group">
-                <label for="workoutType">type</label>
-                <select id="workoutType">
-                    <option value="">select type...</option>
-                    <option value="push">push</option>
-                    <option value="pull">pull</option>
-                    <option value="legs">legs</option>
-                    <option value="upper">upper</option>
-                    <option value="lower">lower</option>
-                    <option value="full body">full body</option>
-                    <option value="cardio">cardio</option>
-                    <option value="hiit">hiit</option>
-                    <option value="mobility">mobility</option>
-                    <option value="sports">sports</option>
-                    <option value="other">other</option>
-                </select>
+            <div class="existing-workouts" id="existingWorkouts" style="display: none;">
+                <div class="existing-workouts-title">workouts for this day:</div>
+                <div id="existingWorkoutsList"></div>
             </div>
 
-            <div class="form-group">
-                <label for="workoutDetails">details</label>
-                <textarea id="workoutDetails" placeholder="e.g., bench press, squats, running..."></textarea>
-            </div>
+            <div class="form-divider" id="formDivider">
+                <div class="form-divider-title" id="formTitle">add new workout</div>
 
-            <div class="form-group">
-                <label for="workoutMinutes">duration (minutes)</label>
-                <input type="number" id="workoutMinutes" placeholder="60" min="0">
+                <div class="form-group">
+                    <label for="workoutType">type</label>
+                    <select id="workoutType">
+                        <option value="">select type...</option>
+                        <option value="push">push</option>
+                        <option value="pull">pull</option>
+                        <option value="legs">legs</option>
+                        <option value="upper">upper</option>
+                        <option value="lower">lower</option>
+                        <option value="full body">full body</option>
+                        <option value="cardio">cardio</option>
+                        <option value="hiit">hiit</option>
+                        <option value="mobility">mobility</option>
+                        <option value="sports">sports</option>
+                        <option value="other">other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="workoutDetails">details</label>
+                    <textarea id="workoutDetails" placeholder="e.g., bench press, squats, running..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="workoutMinutes">duration (minutes)</label>
+                    <input type="number" id="workoutMinutes" placeholder="60" min="0">
+                </div>
             </div>
 
             <div class="modal-buttons">
-                <button class="btn-cancel" id="cancelBtn">cancel</button>
+                <button class="btn-cancel" id="cancelBtn">close</button>
                 <button class="btn-rest" id="restBtn">rest day</button>
-                <button class="btn-save" id="saveBtn">save</button>
+                <button class="btn-save" id="saveBtn">add workout</button>
             </div>
-            <div class="modal-buttons" style="margin-top: 10px;">
-                <button class="btn-delete" id="deleteBtn" style="display: none;">delete</button>
+            <div class="modal-buttons" id="editButtons" style="display: none; margin-top: 10px;">
+                <button class="btn-delete" id="deleteBtn">delete</button>
+                <button class="btn-save" id="updateBtn">update</button>
             </div>
         </div>
     </div>
@@ -411,19 +491,29 @@
         // State
         let currentWeekOffset = 0;
         let selectedDate = null;
+        let editingIndex = null; // null = adding new, number = editing existing
 
         // Load workouts from localStorage
         function loadWorkouts() {
             const saved = localStorage.getItem('workouts');
-            return saved ? JSON.parse(saved) : {};
+            if (!saved) return {};
+
+            const data = JSON.parse(saved);
+            // Migrate old format (single workout) to new format (array)
+            for (const date in data) {
+                if (!Array.isArray(data[date])) {
+                    data[date] = [data[date]];
+                }
+            }
+            return data;
         }
 
         // Save workouts to localStorage
-        function saveWorkouts(workouts) {
+        function saveWorkoutsData(workouts) {
             localStorage.setItem('workouts', JSON.stringify(workouts));
         }
 
-        // Get week dates for a given offset (0 = current week, -1 = last week, 1 = next week)
+        // Get week dates for a given offset
         function getWeekDates(offset = 0) {
             const today = new Date();
             const dayOfWeek = today.getDay();
@@ -472,12 +562,11 @@
 
             weekDates.forEach(date => {
                 const dateStr = formatDate(date);
-                const workout = workouts[dateStr];
+                const dayWorkouts = workouts[dateStr] || [];
                 const isToday = todayStr === dateStr;
 
                 const cell = document.createElement('div');
                 cell.className = 'day-cell' + (isToday ? ' today' : '');
-                cell.onclick = () => openModal(date);
 
                 const header = document.createElement('div');
                 header.className = 'day-header';
@@ -490,27 +579,46 @@
                 cell.appendChild(header);
                 cell.appendChild(dateLabel);
 
-                if (workout) {
-                    const entry = document.createElement('div');
-                    entry.className = 'workout-entry' + (workout.type === 'rest' ? ' rest' : '');
-                    entry.innerHTML = `
-                        <div class="workout-type">${workout.type}</div>
-                        ${workout.details ? `<div class="workout-details">${workout.details}</div>` : ''}
-                    `;
-                    cell.appendChild(entry);
+                // Check if it's a rest day
+                const isRestDay = dayWorkouts.length === 1 && dayWorkouts[0].type === 'rest';
 
-                    if (workout.type === 'rest') {
-                        restDays++;
-                    } else {
+                if (isRestDay) {
+                    const entry = document.createElement('div');
+                    entry.className = 'workout-entry rest';
+                    entry.innerHTML = '<div class="workout-type">rest</div>';
+                    entry.onclick = (e) => {
+                        e.stopPropagation();
+                        openModal(date);
+                    };
+                    cell.appendChild(entry);
+                    restDays++;
+                } else {
+                    dayWorkouts.forEach((workout, index) => {
+                        const entry = document.createElement('div');
+                        entry.className = 'workout-entry';
+                        entry.innerHTML = `
+                            <div class="workout-type">${workout.type}</div>
+                            ${workout.details ? `<div class="workout-details">${workout.details}</div>` : ''}
+                        `;
+                        entry.onclick = (e) => {
+                            e.stopPropagation();
+                            openModal(date, index);
+                        };
+                        cell.appendChild(entry);
                         totalWorkouts++;
                         totalMinutes += workout.minutes || 0;
-                    }
-                } else {
-                    const hint = document.createElement('div');
-                    hint.className = 'add-hint';
-                    hint.textContent = '+ click to add';
-                    cell.appendChild(hint);
+                    });
                 }
+
+                // Add workout button
+                const addBtn = document.createElement('button');
+                addBtn.className = 'add-workout-btn';
+                addBtn.textContent = '+ add workout';
+                addBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    openModal(date);
+                };
+                cell.appendChild(addBtn);
 
                 grid.appendChild(cell);
             });
@@ -520,7 +628,6 @@
             document.getElementById('totalMinutes').textContent = totalMinutes;
             document.getElementById('restDays').textContent = restDays;
 
-            // Calculate streak
             calculateStreak();
         }
 
@@ -535,8 +642,10 @@
                 const checkDate = new Date(today);
                 checkDate.setDate(today.getDate() - i);
                 const dateStr = formatDate(checkDate);
+                const dayWorkouts = workouts[dateStr] || [];
 
-                if (workouts[dateStr] && workouts[dateStr].type !== 'rest') {
+                const hasRealWorkout = dayWorkouts.some(w => w.type !== 'rest');
+                if (hasRealWorkout) {
                     streak++;
                 } else if (i > 0) {
                     break;
@@ -566,20 +675,77 @@
             document.getElementById('weekLabel').textContent = label;
         }
 
-        // Modal functions
-        function openModal(date) {
+        // Render existing workouts in modal
+        function renderExistingWorkouts(dateStr) {
+            const workouts = loadWorkouts();
+            const dayWorkouts = workouts[dateStr] || [];
+            const container = document.getElementById('existingWorkouts');
+            const list = document.getElementById('existingWorkoutsList');
+
+            if (dayWorkouts.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+
+            container.style.display = 'block';
+            list.innerHTML = '';
+
+            dayWorkouts.forEach((workout, index) => {
+                const item = document.createElement('div');
+                item.className = 'existing-workout-item' + (workout.type === 'rest' ? ' rest' : '');
+                item.innerHTML = `
+                    <div class="existing-workout-info">
+                        <div class="workout-type">${workout.type}</div>
+                        ${workout.details ? `<div class="workout-details">${workout.details}</div>` : ''}
+                        ${workout.minutes ? `<div class="workout-details">${workout.minutes} min</div>` : ''}
+                    </div>
+                    <div class="existing-workout-actions">
+                        <button class="btn-edit-small" onclick="editWorkout(${index})">edit</button>
+                        <button class="btn-delete-small" onclick="deleteWorkout(${index})">delete</button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        // Open modal
+        function openModal(date, workoutIndex = null) {
             selectedDate = date;
+            editingIndex = workoutIndex;
             const dateStr = formatDate(date);
             const workouts = loadWorkouts();
-            const workout = workouts[dateStr];
+            const dayWorkouts = workouts[dateStr] || [];
 
             document.getElementById('modalDate').textContent = formatDateDisplay(date);
-            document.getElementById('workoutType').value = workout?.type || '';
-            document.getElementById('workoutDetails').value = workout?.details || '';
-            document.getElementById('workoutMinutes').value = workout?.minutes || '';
 
-            document.getElementById('modalTitle').textContent = workout ? 'edit workout' : 'add workout';
-            document.getElementById('deleteBtn').style.display = workout ? 'block' : 'none';
+            // Render existing workouts
+            renderExistingWorkouts(dateStr);
+
+            // Reset form
+            document.getElementById('workoutType').value = '';
+            document.getElementById('workoutDetails').value = '';
+            document.getElementById('workoutMinutes').value = '';
+
+            if (workoutIndex !== null && dayWorkouts[workoutIndex]) {
+                // Editing existing workout
+                const workout = dayWorkouts[workoutIndex];
+                document.getElementById('workoutType').value = workout.type || '';
+                document.getElementById('workoutDetails').value = workout.details || '';
+                document.getElementById('workoutMinutes').value = workout.minutes || '';
+
+                document.getElementById('modalTitle').textContent = 'edit workout';
+                document.getElementById('formTitle').textContent = 'edit workout';
+                document.getElementById('saveBtn').style.display = 'none';
+                document.getElementById('restBtn').style.display = 'none';
+                document.getElementById('editButtons').style.display = 'flex';
+            } else {
+                // Adding new workout
+                document.getElementById('modalTitle').textContent = dayWorkouts.length > 0 ? 'manage workouts' : 'add workout';
+                document.getElementById('formTitle').textContent = 'add new workout';
+                document.getElementById('saveBtn').style.display = 'block';
+                document.getElementById('restBtn').style.display = dayWorkouts.length === 0 ? 'block' : 'none';
+                document.getElementById('editButtons').style.display = 'none';
+            }
 
             document.getElementById('workoutModal').classList.add('active');
         }
@@ -587,9 +753,62 @@
         function closeModal() {
             document.getElementById('workoutModal').classList.remove('active');
             selectedDate = null;
+            editingIndex = null;
         }
 
-        function saveWorkout() {
+        // Edit workout (called from existing workout list)
+        window.editWorkout = function(index) {
+            editingIndex = index;
+            const dateStr = formatDate(selectedDate);
+            const workouts = loadWorkouts();
+            const workout = workouts[dateStr][index];
+
+            document.getElementById('workoutType').value = workout.type || '';
+            document.getElementById('workoutDetails').value = workout.details || '';
+            document.getElementById('workoutMinutes').value = workout.minutes || '';
+
+            document.getElementById('formTitle').textContent = 'edit workout';
+            document.getElementById('saveBtn').style.display = 'none';
+            document.getElementById('restBtn').style.display = 'none';
+            document.getElementById('editButtons').style.display = 'flex';
+        };
+
+        // Delete workout
+        window.deleteWorkout = function(index) {
+            if (!selectedDate) return;
+
+            const dateStr = formatDate(selectedDate);
+            const workouts = loadWorkouts();
+
+            if (workouts[dateStr]) {
+                workouts[dateStr].splice(index, 1);
+                if (workouts[dateStr].length === 0) {
+                    delete workouts[dateStr];
+                }
+                saveWorkoutsData(workouts);
+            }
+
+            // Reset editing state
+            editingIndex = null;
+            document.getElementById('workoutType').value = '';
+            document.getElementById('workoutDetails').value = '';
+            document.getElementById('workoutMinutes').value = '';
+            document.getElementById('formTitle').textContent = 'add new workout';
+            document.getElementById('saveBtn').style.display = 'block';
+            document.getElementById('editButtons').style.display = 'none';
+
+            renderExistingWorkouts(dateStr);
+            renderWorkoutGrid();
+
+            // Close if no more workouts
+            const updatedWorkouts = loadWorkouts();
+            if (!updatedWorkouts[dateStr] || updatedWorkouts[dateStr].length === 0) {
+                document.getElementById('restBtn').style.display = 'block';
+            }
+        };
+
+        // Add new workout
+        function addWorkout() {
             if (!selectedDate) return;
 
             const type = document.getElementById('workoutType').value;
@@ -604,34 +823,71 @@
             const dateStr = formatDate(selectedDate);
             const workouts = loadWorkouts();
 
-            workouts[dateStr] = { type, details, minutes };
-            saveWorkouts(workouts);
+            if (!workouts[dateStr]) {
+                workouts[dateStr] = [];
+            }
 
-            closeModal();
+            // Remove rest day if adding a real workout
+            workouts[dateStr] = workouts[dateStr].filter(w => w.type !== 'rest');
+
+            workouts[dateStr].push({ type, details, minutes });
+            saveWorkoutsData(workouts);
+
+            // Reset form
+            document.getElementById('workoutType').value = '';
+            document.getElementById('workoutDetails').value = '';
+            document.getElementById('workoutMinutes').value = '';
+
+            renderExistingWorkouts(dateStr);
+            renderWorkoutGrid();
+
+            // Hide rest button after adding workout
+            document.getElementById('restBtn').style.display = 'none';
+        }
+
+        // Update existing workout
+        function updateWorkout() {
+            if (!selectedDate || editingIndex === null) return;
+
+            const type = document.getElementById('workoutType').value;
+            const details = document.getElementById('workoutDetails').value.trim();
+            const minutes = parseInt(document.getElementById('workoutMinutes').value) || 0;
+
+            if (!type) {
+                alert('Please select a workout type');
+                return;
+            }
+
+            const dateStr = formatDate(selectedDate);
+            const workouts = loadWorkouts();
+
+            if (workouts[dateStr] && workouts[dateStr][editingIndex]) {
+                workouts[dateStr][editingIndex] = { type, details, minutes };
+                saveWorkoutsData(workouts);
+            }
+
+            // Reset to add mode
+            editingIndex = null;
+            document.getElementById('workoutType').value = '';
+            document.getElementById('workoutDetails').value = '';
+            document.getElementById('workoutMinutes').value = '';
+            document.getElementById('formTitle').textContent = 'add new workout';
+            document.getElementById('saveBtn').style.display = 'block';
+            document.getElementById('editButtons').style.display = 'none';
+
+            renderExistingWorkouts(dateStr);
             renderWorkoutGrid();
         }
 
+        // Mark as rest day
         function markRestDay() {
             if (!selectedDate) return;
 
             const dateStr = formatDate(selectedDate);
             const workouts = loadWorkouts();
 
-            workouts[dateStr] = { type: 'rest', details: '', minutes: 0 };
-            saveWorkouts(workouts);
-
-            closeModal();
-            renderWorkoutGrid();
-        }
-
-        function deleteWorkout() {
-            if (!selectedDate) return;
-
-            const dateStr = formatDate(selectedDate);
-            const workouts = loadWorkouts();
-
-            delete workouts[dateStr];
-            saveWorkouts(workouts);
+            workouts[dateStr] = [{ type: 'rest', details: '', minutes: 0 }];
+            saveWorkoutsData(workouts);
 
             closeModal();
             renderWorkoutGrid();
@@ -657,9 +913,10 @@
         };
 
         document.getElementById('cancelBtn').onclick = closeModal;
-        document.getElementById('saveBtn').onclick = saveWorkout;
+        document.getElementById('saveBtn').onclick = addWorkout;
         document.getElementById('restBtn').onclick = markRestDay;
-        document.getElementById('deleteBtn').onclick = deleteWorkout;
+        document.getElementById('deleteBtn').onclick = () => deleteWorkout(editingIndex);
+        document.getElementById('updateBtn').onclick = updateWorkout;
 
         document.getElementById('workoutModal').onclick = (e) => {
             if (e.target.id === 'workoutModal') closeModal();
