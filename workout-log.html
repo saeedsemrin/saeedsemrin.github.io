@@ -65,6 +65,22 @@
             background: #0000cc !important;
         }
 
+        .admin-toggle {
+            margin-left: 10px;
+            background: none;
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 0.8em;
+        }
+
+        .admin-toggle.active {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+
         .workout-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -103,11 +119,14 @@
             margin-bottom: 5px;
             font-size: 0.85em;
             border-left: 3px solid #ffb366;
+        }
+
+        .workout-entry.clickable {
             cursor: pointer;
             transition: background-color 0.2s;
         }
 
-        .workout-entry:hover {
+        .workout-entry.clickable:hover {
             background: #f0f0f0;
         }
 
@@ -136,6 +155,11 @@
             font-family: Arial, sans-serif;
             font-size: 0.8em;
             transition: all 0.2s;
+            display: none;
+        }
+
+        .add-workout-btn.visible {
+            display: block;
         }
 
         .add-workout-btn:hover {
@@ -174,6 +198,12 @@
 
         .stat-label {
             font-size: 0.85em;
+            color: #666;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
             color: #666;
         }
 
@@ -392,11 +422,12 @@
                     <span class="current-week-label" id="weekLabel">this week</span>
                     <button id="nextWeek">next &rarr;</button>
                     <button id="todayBtn" class="today-btn">today</button>
+                    <button id="adminToggle" class="admin-toggle">edit mode</button>
                 </div>
             </div>
 
             <div class="workout-grid" id="workoutGrid">
-                <!-- Days will be populated by JavaScript -->
+                <div class="loading">loading workouts...</div>
             </div>
 
             <div class="stats-section">
@@ -478,7 +509,43 @@
         </div>
     </div>
 
+    <!-- Password Modal -->
+    <div class="modal-overlay" id="passwordModal">
+        <div class="modal">
+            <h3>enter password</h3>
+            <div class="form-group">
+                <input type="password" id="adminPassword" placeholder="password">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" id="passwordCancel">cancel</button>
+                <button class="btn-save" id="passwordSubmit">submit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+
     <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD_aBPWUCaF6Z9qVki7aTR4aeCwdMbgjdM",
+            authDomain: "workout-tracker-fb143.firebaseapp.com",
+            databaseURL: "https://workout-tracker-fb143-default-rtdb.firebaseio.com",
+            projectId: "workout-tracker-fb143",
+            storageBucket: "workout-tracker-fb143.firebasestorage.app",
+            messagingSenderId: "396031571539",
+            appId: "1:396031571539:web:9791d53ca95338609338a6"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Admin password (you can change this)
+        const ADMIN_PASSWORD = "workout2025";
+
         // Update time
         function updateTime() {
             const now = new Date();
@@ -491,26 +558,31 @@
         // State
         let currentWeekOffset = 0;
         let selectedDate = null;
-        let editingIndex = null; // null = adding new, number = editing existing
+        let editingIndex = null;
+        let isAdminMode = false;
+        let workoutsCache = {};
 
-        // Load workouts from localStorage
-        function loadWorkouts() {
-            const saved = localStorage.getItem('workouts');
-            if (!saved) return {};
-
-            const data = JSON.parse(saved);
-            // Migrate old format (single workout) to new format (array)
-            for (const date in data) {
-                if (!Array.isArray(data[date])) {
-                    data[date] = [data[date]];
-                }
-            }
-            return data;
+        // Load workouts from Firebase
+        async function loadWorkouts() {
+            return new Promise((resolve) => {
+                database.ref('workouts').once('value', (snapshot) => {
+                    const data = snapshot.val() || {};
+                    // Convert arrays stored as objects back to arrays
+                    for (const date in data) {
+                        if (data[date] && typeof data[date] === 'object' && !Array.isArray(data[date])) {
+                            data[date] = Object.values(data[date]);
+                        }
+                    }
+                    workoutsCache = data;
+                    resolve(data);
+                });
+            });
         }
 
-        // Save workouts to localStorage
-        function saveWorkoutsData(workouts) {
-            localStorage.setItem('workouts', JSON.stringify(workouts));
+        // Save workouts to Firebase
+        async function saveWorkoutsData(workouts) {
+            workoutsCache = workouts;
+            await database.ref('workouts').set(workouts);
         }
 
         // Get week dates for a given offset
@@ -548,10 +620,12 @@
         }
 
         // Render the workout grid
-        function renderWorkoutGrid() {
+        async function renderWorkoutGrid() {
             const grid = document.getElementById('workoutGrid');
+            grid.innerHTML = '<div class="loading">loading...</div>';
+
             const weekDates = getWeekDates(currentWeekOffset);
-            const workouts = loadWorkouts();
+            const workouts = await loadWorkouts();
             const todayStr = formatDate(new Date());
 
             let totalWorkouts = 0;
@@ -584,35 +658,39 @@
 
                 if (isRestDay) {
                     const entry = document.createElement('div');
-                    entry.className = 'workout-entry rest';
+                    entry.className = 'workout-entry rest' + (isAdminMode ? ' clickable' : '');
                     entry.innerHTML = '<div class="workout-type">rest</div>';
-                    entry.onclick = (e) => {
-                        e.stopPropagation();
-                        openModal(date);
-                    };
+                    if (isAdminMode) {
+                        entry.onclick = (e) => {
+                            e.stopPropagation();
+                            openModal(date);
+                        };
+                    }
                     cell.appendChild(entry);
                     restDays++;
                 } else {
                     dayWorkouts.forEach((workout, index) => {
                         const entry = document.createElement('div');
-                        entry.className = 'workout-entry';
+                        entry.className = 'workout-entry' + (isAdminMode ? ' clickable' : '');
                         entry.innerHTML = `
                             <div class="workout-type">${workout.type}</div>
                             ${workout.details ? `<div class="workout-details">${workout.details}</div>` : ''}
                         `;
-                        entry.onclick = (e) => {
-                            e.stopPropagation();
-                            openModal(date, index);
-                        };
+                        if (isAdminMode) {
+                            entry.onclick = (e) => {
+                                e.stopPropagation();
+                                openModal(date, index);
+                            };
+                        }
                         cell.appendChild(entry);
                         totalWorkouts++;
                         totalMinutes += workout.minutes || 0;
                     });
                 }
 
-                // Add workout button
+                // Add workout button (only visible in admin mode)
                 const addBtn = document.createElement('button');
-                addBtn.className = 'add-workout-btn';
+                addBtn.className = 'add-workout-btn' + (isAdminMode ? ' visible' : '');
                 addBtn.textContent = '+ add workout';
                 addBtn.onclick = (e) => {
                     e.stopPropagation();
@@ -628,12 +706,11 @@
             document.getElementById('totalMinutes').textContent = totalMinutes;
             document.getElementById('restDays').textContent = restDays;
 
-            calculateStreak();
+            calculateStreak(workouts);
         }
 
         // Calculate workout streak
-        function calculateStreak() {
-            const workouts = loadWorkouts();
+        function calculateStreak(workouts) {
             let streak = 0;
             const today = new Date();
             today.setHours(0, 0, 0, 0);
@@ -675,9 +752,23 @@
             document.getElementById('weekLabel').textContent = label;
         }
 
+        // Toggle admin mode
+        function toggleAdminMode() {
+            if (isAdminMode) {
+                isAdminMode = false;
+                document.getElementById('adminToggle').classList.remove('active');
+                document.getElementById('adminToggle').textContent = 'edit mode';
+                renderWorkoutGrid();
+            } else {
+                document.getElementById('passwordModal').classList.add('active');
+                document.getElementById('adminPassword').value = '';
+                document.getElementById('adminPassword').focus();
+            }
+        }
+
         // Render existing workouts in modal
         function renderExistingWorkouts(dateStr) {
-            const workouts = loadWorkouts();
+            const workouts = workoutsCache;
             const dayWorkouts = workouts[dateStr] || [];
             const container = document.getElementById('existingWorkouts');
             const list = document.getElementById('existingWorkoutsList');
@@ -710,24 +801,22 @@
 
         // Open modal
         function openModal(date, workoutIndex = null) {
+            if (!isAdminMode) return;
+
             selectedDate = date;
             editingIndex = workoutIndex;
             const dateStr = formatDate(date);
-            const workouts = loadWorkouts();
-            const dayWorkouts = workouts[dateStr] || [];
+            const dayWorkouts = workoutsCache[dateStr] || [];
 
             document.getElementById('modalDate').textContent = formatDateDisplay(date);
 
-            // Render existing workouts
             renderExistingWorkouts(dateStr);
 
-            // Reset form
             document.getElementById('workoutType').value = '';
             document.getElementById('workoutDetails').value = '';
             document.getElementById('workoutMinutes').value = '';
 
             if (workoutIndex !== null && dayWorkouts[workoutIndex]) {
-                // Editing existing workout
                 const workout = dayWorkouts[workoutIndex];
                 document.getElementById('workoutType').value = workout.type || '';
                 document.getElementById('workoutDetails').value = workout.details || '';
@@ -739,7 +828,6 @@
                 document.getElementById('restBtn').style.display = 'none';
                 document.getElementById('editButtons').style.display = 'flex';
             } else {
-                // Adding new workout
                 document.getElementById('modalTitle').textContent = dayWorkouts.length > 0 ? 'manage workouts' : 'add workout';
                 document.getElementById('formTitle').textContent = 'add new workout';
                 document.getElementById('saveBtn').style.display = 'block';
@@ -756,12 +844,11 @@
             editingIndex = null;
         }
 
-        // Edit workout (called from existing workout list)
+        // Edit workout
         window.editWorkout = function(index) {
             editingIndex = index;
             const dateStr = formatDate(selectedDate);
-            const workouts = loadWorkouts();
-            const workout = workouts[dateStr][index];
+            const workout = workoutsCache[dateStr][index];
 
             document.getElementById('workoutType').value = workout.type || '';
             document.getElementById('workoutDetails').value = workout.details || '';
@@ -774,21 +861,20 @@
         };
 
         // Delete workout
-        window.deleteWorkout = function(index) {
+        window.deleteWorkout = async function(index) {
             if (!selectedDate) return;
 
             const dateStr = formatDate(selectedDate);
-            const workouts = loadWorkouts();
+            const workouts = { ...workoutsCache };
 
             if (workouts[dateStr]) {
                 workouts[dateStr].splice(index, 1);
                 if (workouts[dateStr].length === 0) {
                     delete workouts[dateStr];
                 }
-                saveWorkoutsData(workouts);
+                await saveWorkoutsData(workouts);
             }
 
-            // Reset editing state
             editingIndex = null;
             document.getElementById('workoutType').value = '';
             document.getElementById('workoutDetails').value = '';
@@ -800,15 +886,13 @@
             renderExistingWorkouts(dateStr);
             renderWorkoutGrid();
 
-            // Close if no more workouts
-            const updatedWorkouts = loadWorkouts();
-            if (!updatedWorkouts[dateStr] || updatedWorkouts[dateStr].length === 0) {
+            if (!workoutsCache[dateStr] || workoutsCache[dateStr].length === 0) {
                 document.getElementById('restBtn').style.display = 'block';
             }
         };
 
         // Add new workout
-        function addWorkout() {
+        async function addWorkout() {
             if (!selectedDate) return;
 
             const type = document.getElementById('workoutType').value;
@@ -821,19 +905,16 @@
             }
 
             const dateStr = formatDate(selectedDate);
-            const workouts = loadWorkouts();
+            const workouts = { ...workoutsCache };
 
             if (!workouts[dateStr]) {
                 workouts[dateStr] = [];
             }
 
-            // Remove rest day if adding a real workout
             workouts[dateStr] = workouts[dateStr].filter(w => w.type !== 'rest');
-
             workouts[dateStr].push({ type, details, minutes });
-            saveWorkoutsData(workouts);
+            await saveWorkoutsData(workouts);
 
-            // Reset form
             document.getElementById('workoutType').value = '';
             document.getElementById('workoutDetails').value = '';
             document.getElementById('workoutMinutes').value = '';
@@ -841,12 +922,11 @@
             renderExistingWorkouts(dateStr);
             renderWorkoutGrid();
 
-            // Hide rest button after adding workout
             document.getElementById('restBtn').style.display = 'none';
         }
 
         // Update existing workout
-        function updateWorkout() {
+        async function updateWorkout() {
             if (!selectedDate || editingIndex === null) return;
 
             const type = document.getElementById('workoutType').value;
@@ -859,14 +939,13 @@
             }
 
             const dateStr = formatDate(selectedDate);
-            const workouts = loadWorkouts();
+            const workouts = { ...workoutsCache };
 
             if (workouts[dateStr] && workouts[dateStr][editingIndex]) {
                 workouts[dateStr][editingIndex] = { type, details, minutes };
-                saveWorkoutsData(workouts);
+                await saveWorkoutsData(workouts);
             }
 
-            // Reset to add mode
             editingIndex = null;
             document.getElementById('workoutType').value = '';
             document.getElementById('workoutDetails').value = '';
@@ -880,14 +959,14 @@
         }
 
         // Mark as rest day
-        function markRestDay() {
+        async function markRestDay() {
             if (!selectedDate) return;
 
             const dateStr = formatDate(selectedDate);
-            const workouts = loadWorkouts();
+            const workouts = { ...workoutsCache };
 
             workouts[dateStr] = [{ type: 'rest', details: '', minutes: 0 }];
-            saveWorkoutsData(workouts);
+            await saveWorkoutsData(workouts);
 
             closeModal();
             renderWorkoutGrid();
@@ -912,6 +991,8 @@
             updateWeekLabel();
         };
 
+        document.getElementById('adminToggle').onclick = toggleAdminMode;
+
         document.getElementById('cancelBtn').onclick = closeModal;
         document.getElementById('saveBtn').onclick = addWorkout;
         document.getElementById('restBtn').onclick = markRestDay;
@@ -920,6 +1001,36 @@
 
         document.getElementById('workoutModal').onclick = (e) => {
             if (e.target.id === 'workoutModal') closeModal();
+        };
+
+        // Password modal
+        document.getElementById('passwordCancel').onclick = () => {
+            document.getElementById('passwordModal').classList.remove('active');
+        };
+
+        document.getElementById('passwordSubmit').onclick = () => {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                isAdminMode = true;
+                document.getElementById('adminToggle').classList.add('active');
+                document.getElementById('adminToggle').textContent = 'exit edit';
+                document.getElementById('passwordModal').classList.remove('active');
+                renderWorkoutGrid();
+            } else {
+                alert('Incorrect password');
+            }
+        };
+
+        document.getElementById('adminPassword').onkeypress = (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('passwordSubmit').click();
+            }
+        };
+
+        document.getElementById('passwordModal').onclick = (e) => {
+            if (e.target.id === 'passwordModal') {
+                document.getElementById('passwordModal').classList.remove('active');
+            }
         };
 
         // Initialize
