@@ -188,10 +188,34 @@ select {
     }
 }
 
-/* Add some responsive padding for smaller screens */
+/* Mobile responsiveness */
 @media (max-width: 768px) {
     .archive-container {
         padding: 10px;
+    }
+
+    .archive-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .filter-bar {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .blog-post-content {
+        padding: 0 10px;
+    }
+
+    .nav-links {
+        justify-content: center;
     }
 }
 
