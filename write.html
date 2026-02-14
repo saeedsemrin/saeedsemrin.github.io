@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>write | saeed semrin</title>
+    <meta name="description" content="Blog post editor">
+    <link rel="stylesheet" href="style_blog.css">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        .write-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .auth-wall {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .auth-wall input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            font-family: Arial, sans-serif;
+            font-size: 1em;
+            width: 200px;
+        }
+
+        .auth-wall button {
+            padding: 10px 20px;
+            background: #0000ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 1em;
+            margin-left: 10px;
+        }
+
+        .editor {
+            display: none;
+        }
+
+        .editor.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            font-family: Arial, sans-serif;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            min-height: 400px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .editor-actions button {
+            padding: 12px 24px;
+            border: none;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 1em;
+        }
+
+        .btn-publish {
+            background: #0000ff;
+            color: white;
+        }
+
+        .btn-publish:hover {
+            background: #0000cc;
+        }
+
+        .btn-preview {
+            background: #eee;
+        }
+
+        .btn-preview:hover {
+            background: #ddd;
+        }
+
+        .btn-delete {
+            background: #ff4444;
+            color: white;
+            margin-left: auto;
+        }
+
+        .btn-delete:hover {
+            background: #cc0000;
+        }
+
+        .btn-back {
+            background: none;
+            border: 1px solid #ccc !important;
+        }
+
+        .post-list {
+            margin-top: 30px;
+        }
+
+        .post-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .post-list-item:first-child {
+            border-top: 1px solid #eee;
+        }
+
+        .post-list-info {
+            flex: 1;
+        }
+
+        .post-list-title {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .post-list-meta {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .post-list-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .post-list-actions button {
+            padding: 6px 12px;
+            font-size: 0.85em;
+            border: 1px solid #ccc;
+            background: none;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+        }
+
+        .post-list-actions button:hover {
+            background: #f5f5f5;
+        }
+
+        .new-post-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #0000ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 1em;
+            margin-top: 20px;
+        }
+
+        .new-post-btn:hover {
+            background: #0000cc;
+        }
+
+        .preview-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .preview-overlay.active {
+            display: block;
+        }
+
+        .preview-close {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            background: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            z-index: 1001;
+        }
+
+        .status-msg {
+            padding: 10px 15px;
+            margin-top: 15px;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .status-msg.success {
+            display: block;
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-msg.error {
+            display: block;
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .help-text {
+            font-size: 0.8em;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .editor-actions {
+                flex-wrap: wrap;
+            }
+
+            .btn-delete {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="archive-container">
+        <div class="nav-header">
+            <div class="nav-links">
+                <a href="/" class="home-link">home</a>
+                <span class="nav-separator">/</span>
+                <a href="/blog.html" class="home-link">blog</a>
+            </div>
+            <div class="current-time" id="currentTime"></div>
+        </div>
+
+        <div class="write-container">
+            <!-- Auth wall -->
+            <div class="auth-wall" id="authWall">
+                <p>enter password to write</p>
+                <input type="password" id="authPassword" placeholder="password">
+                <button id="authSubmit">go</button>
+            </div>
+
+            <!-- Post manager (list of posts + new post button) -->
+            <div class="editor" id="postManager">
+                <h2>blog posts</h2>
+                <button class="new-post-btn" id="newPostBtn">+ new post</button>
+                <div class="post-list" id="postList">
+                    <p style="color: #999;">loading posts...</p>
+                </div>
+            </div>
+
+            <!-- Editor form -->
+            <div class="editor" id="editorForm">
+                <h2 id="editorTitle">new post</h2>
+
+                <div class="form-group">
+                    <label for="postTitleInput">title</label>
+                    <input type="text" id="postTitleInput" placeholder="post title">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="postCategory">category</label>
+                        <select id="postCategory">
+                            <option value="thoughts">thoughts</option>
+                            <option value="fitness">fitness</option>
+                            <option value="work">work</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="postLocation">location</label>
+                        <input type="text" id="postLocation" placeholder="denver" value="denver">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="postDescription">description</label>
+                    <input type="text" id="postDescription" placeholder="short description for the blog listing">
+                </div>
+
+                <div class="form-group">
+                    <label for="postContent">content</label>
+                    <textarea id="postContent" placeholder="write your post here...
+
+separate paragraphs with blank lines.
+
+lines starting with > become quotes."></textarea>
+                    <div class="help-text">separate paragraphs with blank lines. start a line with &gt; for a quote block.</div>
+                </div>
+
+                <div class="editor-actions">
+                    <button class="btn-back" id="backBtn">back</button>
+                    <button class="btn-preview" id="previewBtn">preview</button>
+                    <button class="btn-publish" id="publishBtn">publish</button>
+                    <button class="btn-delete" id="deletePostBtn" style="display: none;">delete</button>
+                </div>
+
+                <div class="status-msg" id="statusMsg"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview overlay -->
+    <div class="preview-overlay" id="previewOverlay">
+        <button class="preview-close" id="previewClose">close preview</button>
+        <div class="archive-container">
+            <div class="nav-header">
+                <div class="nav-links">
+                    <a href="#" class="home-link">home</a>
+                    <span class="nav-separator">/</span>
+                    <a href="#" class="home-link">blog</a>
+                </div>
+            </div>
+            <article class="blog-post-content" id="previewContent">
+            </article>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyD_aBPWUCaF6Z9qVki7aTR4aeCwdMbgjdM",
+            authDomain: "workout-tracker-fb143.firebaseapp.com",
+            databaseURL: "https://workout-tracker-fb143-default-rtdb.firebaseio.com",
+            projectId: "workout-tracker-fb143",
+            storageBucket: "workout-tracker-fb143.firebasestorage.app",
+            messagingSenderId: "396031571539",
+            appId: "1:396031571539:web:9791d53ca95338609338a6"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        const ADMIN_PASSWORD = "workout2025";
+        const WRITE_TOKEN = "wt_s33d_f1tn3ss_2025_x7k9m";
+
+        let editingSlug = null;
+
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent =
+                `current local time: ${now.toLocaleTimeString()}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Generate slug from title
+        function slugify(text) {
+            return text.toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .trim();
+        }
+
+        // Convert plain text to HTML paragraphs
+        function textToHtml(text) {
+            const blocks = text.split(/\n\s*\n/);
+            return blocks.map(block => {
+                block = block.trim();
+                if (!block) return '';
+                if (block.startsWith('>')) {
+                    const quoteText = block.replace(/^>\s*/gm, '');
+                    return `<p class="quote">${escapeHtml(quoteText)}</p>`;
+                }
+                return `<p>${escapeHtml(block)}</p>`;
+            }).filter(b => b).join('\n');
+        }
+
+        // Convert HTML back to plain text for editing
+        function htmlToText(html) {
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            const blocks = [];
+            div.querySelectorAll('p').forEach(p => {
+                const text = p.textContent;
+                if (p.classList.contains('quote')) {
+                    blocks.push('> ' + text);
+                } else {
+                    blocks.push(text);
+                }
+            });
+            return blocks.join('\n\n');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Format date for display
+        function formatDateDisplay(dateStr) {
+            const date = new Date(dateStr + 'T12:00:00');
+            return date.toLocaleDateString('en-US', {
+                month: 'long', day: 'numeric', year: 'numeric'
+            }).toLowerCase();
+        }
+
+        // Show status message
+        function showStatus(msg, type) {
+            const el = document.getElementById('statusMsg');
+            el.textContent = msg;
+            el.className = 'status-msg ' + type;
+            if (type === 'success') {
+                setTimeout(() => { el.className = 'status-msg'; }, 3000);
+            }
+        }
+
+        // Load all posts from Firebase
+        async function loadPosts() {
+            return new Promise((resolve) => {
+                database.ref('blog_posts').once('value', (snapshot) => {
+                    const data = snapshot.val() || {};
+                    delete data._token;
+                    resolve(data);
+                });
+            });
+        }
+
+        // Show post list
+        async function showPostList() {
+            document.getElementById('postManager').classList.add('active');
+            document.getElementById('editorForm').classList.remove('active');
+
+            const posts = await loadPosts();
+            const list = document.getElementById('postList');
+
+            const slugs = Object.keys(posts);
+
+            if (slugs.length === 0) {
+                list.innerHTML = '<p style="color: #999;">no posts yet. click "+ new post" to create one.</p>';
+                return;
+            }
+
+            // Sort by date descending
+            slugs.sort((a, b) => {
+                const dateA = posts[a].date || '';
+                const dateB = posts[b].date || '';
+                return dateB.localeCompare(dateA);
+            });
+
+            list.innerHTML = '';
+            slugs.forEach(slug => {
+                const post = posts[slug];
+                const item = document.createElement('div');
+                item.className = 'post-list-item';
+                item.innerHTML = `
+                    <div class="post-list-info">
+                        <div class="post-list-title">${escapeHtml(post.title)}</div>
+                        <div class="post-list-meta">${formatDateDisplay(post.date)} &middot; ${escapeHtml(post.category)}</div>
+                    </div>
+                    <div class="post-list-actions">
+                        <button onclick="editPost('${slug}')">edit</button>
+                        <button onclick="window.open('/blog/view.html?id=${slug}', '_blank')">view</button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        // Open editor for new post
+        function newPost() {
+            editingSlug = null;
+            document.getElementById('editorTitle').textContent = 'new post';
+            document.getElementById('postTitleInput').value = '';
+            document.getElementById('postCategory').value = 'thoughts';
+            document.getElementById('postLocation').value = 'denver';
+            document.getElementById('postDescription').value = '';
+            document.getElementById('postContent').value = '';
+            document.getElementById('deletePostBtn').style.display = 'none';
+            document.getElementById('publishBtn').textContent = 'publish';
+            document.getElementById('statusMsg').className = 'status-msg';
+
+            document.getElementById('postManager').classList.remove('active');
+            document.getElementById('editorForm').classList.add('active');
+        }
+
+        // Edit existing post
+        async function editPost(slug) {
+            const posts = await loadPosts();
+            const post = posts[slug];
+            if (!post) return;
+
+            editingSlug = slug;
+            document.getElementById('editorTitle').textContent = 'edit post';
+            document.getElementById('postTitleInput').value = post.title || '';
+            document.getElementById('postCategory').value = post.category || 'thoughts';
+            document.getElementById('postLocation').value = post.location || 'denver';
+            document.getElementById('postDescription').value = post.description || '';
+            document.getElementById('postContent').value = htmlToText(post.content || '');
+            document.getElementById('deletePostBtn').style.display = 'block';
+            document.getElementById('publishBtn').textContent = 'update';
+            document.getElementById('statusMsg').className = 'status-msg';
+
+            document.getElementById('postManager').classList.remove('active');
+            document.getElementById('editorForm').classList.add('active');
+        }
+        window.editPost = editPost;
+
+        // Publish/update post
+        async function publishPost() {
+            const title = document.getElementById('postTitleInput').value.trim();
+            const category = document.getElementById('postCategory').value;
+            const location = document.getElementById('postLocation').value.trim();
+            const description = document.getElementById('postDescription').value.trim();
+            const contentText = document.getElementById('postContent').value.trim();
+
+            if (!title) { showStatus('title is required', 'error'); return; }
+            if (!contentText) { showStatus('content is required', 'error'); return; }
+
+            const slug = editingSlug || slugify(title);
+            if (!slug) { showStatus('could not generate url from title', 'error'); return; }
+
+            const today = new Date();
+            const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+            const postData = {
+                title: title,
+                category: category,
+                location: location || 'denver',
+                description: description || title,
+                content: textToHtml(contentText),
+                date: editingSlug ? (await loadPosts())[editingSlug]?.date || dateStr : dateStr,
+                updatedAt: Date.now()
+            };
+
+            if (!editingSlug) {
+                postData.createdAt = Date.now();
+            }
+
+            try {
+                // Write post data with token
+                const dataWithToken = { ...postData, _token: WRITE_TOKEN };
+                await database.ref('blog_posts/' + slug).set(dataWithToken);
+                showStatus(editingSlug ? 'post updated' : 'post published', 'success');
+                editingSlug = slug;
+                document.getElementById('publishBtn').textContent = 'update';
+                document.getElementById('deletePostBtn').style.display = 'block';
+                document.getElementById('editorTitle').textContent = 'edit post';
+            } catch (e) {
+                showStatus('error saving post: ' + e.message, 'error');
+            }
+        }
+
+        // Delete post
+        async function deletePost() {
+            if (!editingSlug) return;
+            if (!confirm('delete this post?')) return;
+
+            try {
+                await database.ref('blog_posts/' + editingSlug).remove();
+                editingSlug = null;
+                showPostList();
+            } catch (e) {
+                showStatus('error deleting post: ' + e.message, 'error');
+            }
+        }
+
+        // Preview post
+        function previewPost() {
+            const title = document.getElementById('postTitleInput').value.trim() || 'untitled';
+            const category = document.getElementById('postCategory').value;
+            const location = document.getElementById('postLocation').value.trim() || 'denver';
+            const contentText = document.getElementById('postContent').value.trim();
+
+            const today = new Date();
+            const dateDisplay = formatDateDisplay(
+                `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+            );
+
+            const contentHtml = textToHtml(contentText);
+
+            document.getElementById('previewContent').innerHTML = `
+                <div class="post-meta">
+                    <span class="post-date">${dateDisplay}</span>
+                    <span class="post-location">${escapeHtml(location)}</span>
+                    <span class="post-category">${escapeHtml(category)}</span>
+                </div>
+                <h1>${escapeHtml(title)}</h1>
+                ${contentHtml}
+            `;
+
+            document.getElementById('previewOverlay').classList.add('active');
+        }
+
+        // Auth
+        document.getElementById('authSubmit').onclick = () => {
+            const password = document.getElementById('authPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('authWall').style.display = 'none';
+                showPostList();
+            } else {
+                alert('incorrect password');
+            }
+        };
+
+        document.getElementById('authPassword').onkeypress = (e) => {
+            if (e.key === 'Enter') document.getElementById('authSubmit').click();
+        };
+
+        // Editor buttons
+        document.getElementById('newPostBtn').onclick = newPost;
+        document.getElementById('backBtn').onclick = showPostList;
+        document.getElementById('publishBtn').onclick = publishPost;
+        document.getElementById('deletePostBtn').onclick = deletePost;
+        document.getElementById('previewBtn').onclick = previewPost;
+        document.getElementById('previewClose').onclick = () => {
+            document.getElementById('previewOverlay').classList.remove('active');
+        };
+    </script>
+</body>
+</html>

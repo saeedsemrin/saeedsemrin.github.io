@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>loading... | saeed semrin</title>
+    <meta name="description" content="">
+    <meta property="og:title" content="Blog | Saeed Semrin">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="https://saeedsemrin.com/picasso.png">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../style_blog.css">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <style>
+        .loading-msg {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        .post-not-found {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .post-not-found a {
+            color: #0000ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="archive-container">
+        <div class="nav-header">
+            <div class="nav-links">
+                <a href="/" class="home-link">home</a>
+                <span class="nav-separator">/</span>
+                <a href="/blog.html" class="home-link">blog</a>
+            </div>
+            <div class="current-time" id="currentTime"></div>
+        </div>
+
+        <article class="blog-post-content" id="postContent">
+            <div class="loading-msg">loading post...</div>
+        </article>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyD_aBPWUCaF6Z9qVki7aTR4aeCwdMbgjdM",
+            authDomain: "workout-tracker-fb143.firebaseapp.com",
+            databaseURL: "https://workout-tracker-fb143-default-rtdb.firebaseio.com",
+            projectId: "workout-tracker-fb143",
+            storageBucket: "workout-tracker-fb143.firebasestorage.app",
+            messagingSenderId: "396031571539",
+            appId: "1:396031571539:web:9791d53ca95338609338a6"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent =
+                `current local time: ${now.toLocaleTimeString()}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Format date for display
+        function formatDateDisplay(dateStr) {
+            const date = new Date(dateStr + 'T12:00:00');
+            return date.toLocaleDateString('en-US', {
+                month: 'long', day: 'numeric', year: 'numeric'
+            }).toLowerCase();
+        }
+
+        // Load post
+        async function loadPost() {
+            const params = new URLSearchParams(window.location.search);
+            const slug = params.get('id');
+
+            if (!slug) {
+                showNotFound();
+                return;
+            }
+
+            const snapshot = await database.ref('blog_posts/' + slug).once('value');
+            const post = snapshot.val();
+
+            if (!post) {
+                showNotFound();
+                return;
+            }
+
+            // Update page title and meta
+            document.title = post.title + ' | saeed semrin';
+            document.querySelector('meta[name="description"]').content = post.description || '';
+            document.querySelector('meta[property="og:title"]').content = post.title + ' | Saeed Semrin';
+            document.querySelector('meta[property="og:description"]').content = post.description || '';
+
+            // Render post
+            document.getElementById('postContent').innerHTML = `
+                <div class="post-meta">
+                    <span class="post-date">${formatDateDisplay(post.date)}</span>
+                    <span class="post-location">${post.location || 'denver'}</span>
+                    <span class="post-category">${post.category || ''}</span>
+                </div>
+                <h1>${post.title}</h1>
+                ${post.content}
+            `;
+        }
+
+        function showNotFound() {
+            document.getElementById('postContent').innerHTML = `
+                <div class="post-not-found">
+                    <h1>post not found</h1>
+                    <p><a href="/blog.html">back to blog</a></p>
+                </div>
+            `;
+        }
+
+        loadPost();
+    </script>
+</body>
+</html>
