@@ -160,43 +160,106 @@
                 </div>
             </div>
 
-            <div class="archive-item coming-soon">
-                <div class="item-category">coming soon</div>
-                <h2>more posts coming</h2>
-                <div class="item-details">
-                    <span class="location">worldwide</span>
-                    <p>future posts will appear here</p>
-                </div>
-            </div>
         </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+
     <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyD_aBPWUCaF6Z9qVki7aTR4aeCwdMbgjdM",
+            authDomain: "workout-tracker-fb143.firebaseapp.com",
+            databaseURL: "https://workout-tracker-fb143-default-rtdb.firebaseio.com",
+            projectId: "workout-tracker-fb143",
+            storageBucket: "workout-tracker-fb143.firebasestorage.app",
+            messagingSenderId: "396031571539",
+            appId: "1:396031571539:web:9791d53ca95338609338a6"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
         // Update current time
         function updateTime() {
             const now = new Date();
-            document.getElementById('currentTime').textContent = 
+            document.getElementById('currentTime').textContent =
                 `current local time: ${now.toLocaleTimeString()}`;
         }
         setInterval(updateTime, 1000);
         updateTime();
 
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Load Firebase posts and add them to the grid
+        async function loadFirebasePosts() {
+            const snapshot = await database.ref('blog_posts').once('value');
+            const posts = snapshot.val() || {};
+            delete posts._token;
+
+            const grid = document.getElementById('posts');
+
+            Object.keys(posts).forEach(slug => {
+                const post = posts[slug];
+                // Remove token from individual posts
+                delete post._token;
+
+                const encodedTitle = encodeURIComponent(post.title || '');
+                const postUrl = `https://saeedsemrin.com/blog/view.html?id=${slug}`;
+
+                const item = document.createElement('div');
+                item.className = 'archive-item';
+                item.setAttribute('data-category', post.category || 'thoughts');
+                item.setAttribute('data-date', post.date || '');
+                item.innerHTML = `
+                    <div class="item-category">${escapeHtml(post.category || 'thoughts')}</div>
+                    <div class="post-date">${formatDateDisplay(post.date)}</div>
+                    <h2><a href="/blog/view.html?id=${slug}" class="post-link">${escapeHtml(post.title)}</a></h2>
+                    <div class="item-details">
+                        <span class="location">${escapeHtml(post.location || 'denver')}</span>
+                        <p>${escapeHtml(post.description || post.title)}</p>
+                        <div class="share-links">
+                            SHARE:
+                            <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}" target="_blank" rel="noopener">FB</a>
+                            <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(postUrl)}&text=${encodedTitle}" target="_blank" rel="noopener">TW</a>
+                            <a href="https://wa.me/?text=${encodedTitle}%20${encodeURIComponent(postUrl)}" target="_blank" rel="noopener">WA</a>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(item);
+            });
+
+            // Sort and filter after Firebase posts are added
+            sortPosts();
+            filterPosts();
+        }
+
+        function formatDateDisplay(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr + 'T12:00:00');
+            return date.toLocaleDateString('en-US', {
+                month: 'long', day: 'numeric', year: 'numeric'
+            }).toLowerCase();
+        }
+
         // Sort posts by date
         function sortPosts() {
             const postsContainer = document.getElementById('posts');
             const posts = Array.from(postsContainer.getElementsByClassName('archive-item'));
-            
+
             posts.sort((a, b) => {
                 const dateA = new Date(a.getAttribute('data-date'));
                 const dateB = new Date(b.getAttribute('data-date'));
-                return dateB - dateA; // Sort in descending order (newest first)
+                return dateB - dateA;
             });
-            
+
             posts.forEach(post => postsContainer.appendChild(post));
         }
-
-        // Call sort function after page loads
-        window.addEventListener('load', sortPosts);
 
         // Filter posts
         function filterPosts() {
@@ -217,6 +280,12 @@
                 item.classList.remove('expanded');
             });
         }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            sortPosts();
+            loadFirebasePosts();
+        });
     </script>
 </body>
 </html>
